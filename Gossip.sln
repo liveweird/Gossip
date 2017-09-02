@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GossipWeb", "GossipWeb\GossipWeb.csproj", "{FB7AC063-543A-4935-BA1F-3B85DDD4E2C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Web", "GossipWeb\Gossip.Web.csproj", "{FB7AC063-543A-4935-BA1F-3B85DDD4E2C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{515E6E78-596C-4071-8B00-E390EB2221B2}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
