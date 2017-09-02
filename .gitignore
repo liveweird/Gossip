@@ -2,3 +2,4 @@
 *.ncrunchsolution.user
 */obj/*
 */bin/*
+*.db
