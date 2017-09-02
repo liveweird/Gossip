@@ -4,35 +4,35 @@ using Microsoft.AspNetCore.Mvc;
 namespace Gossip.Web.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class ChannelsController : Controller
     {
-        // GET api/values
+        // GET api/channels
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new[] { "channel1", "channel2" };
         }
 
-        // GET api/values/5
+        // GET api/channels/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return "channel";
         }
 
-        // POST api/values
+        // POST api/channels
         [HttpPost]
         public void Post([FromBody]string value)
         {
         }
 
-        // PUT api/values/5
+        // PUT api/channels/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/channels/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
