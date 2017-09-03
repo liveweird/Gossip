@@ -1,4 +1,4 @@
-﻿using Gossip.Domain.Models;
+﻿using Gossip.Domain.Models.Chat;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gossip.SQLite

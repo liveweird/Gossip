@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Gossip.Domain
+namespace Gossip.Domain.Repositories
 {
     public interface IRepository<T>
     {

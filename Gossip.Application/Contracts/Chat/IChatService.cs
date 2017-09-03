@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Channel = Gossip.Application.Models.Channel;
+using Channel = Gossip.Application.Models.Chat.Channel;
 
-namespace Gossip.Application
+namespace Gossip.Application.Contracts.Chat
 {
     public interface IChatService
     {

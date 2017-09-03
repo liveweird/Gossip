@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Gossip.Web.Models.Dashboard;
 
 namespace Gossip.Web
 {
@@ -6,11 +7,11 @@ namespace Gossip.Web
     {
         public MappingProfile()
         {
-            CreateMap<Application.Models.Channel, Domain.Models.Channel>();
-            CreateMap<Domain.Models.Channel, Application.Models.Channel>();
+            CreateMap<Application.Models.Chat.Channel, Domain.Models.Chat.Channel>();
+            CreateMap<Domain.Models.Chat.Channel, Application.Models.Chat.Channel>();
 
-            CreateMap<Application.Models.Channel, Models.Channel>();
-            CreateMap<Models.Channel, Application.Models.Channel>();
+            CreateMap<Application.Models.Chat.Channel, Channel>();
+            CreateMap<Channel, Application.Models.Chat.Channel>();
         }
     }
 }

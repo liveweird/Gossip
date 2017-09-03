@@ -1,6 +1,6 @@
-using Gossip.Domain.Models;
+using Gossip.Domain.Models.Chat;
 
-namespace Gossip.Domain
+namespace Gossip.Domain.Repositories.Chat
 {
     public interface IMessageRepository : IRepository<Message>
     {

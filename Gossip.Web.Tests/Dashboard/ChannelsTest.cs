@@ -1,13 +1,13 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Gossip.Web.Models;
+using Gossip.Web.Models.Dashboard;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace Gossip.Web.Tests
+namespace Gossip.Web.Tests.Dashboard
 {
     public class ChannelsTest
     {
@@ -35,15 +35,15 @@ namespace Gossip.Web.Tests
             // Act
             var content1 = CreateNewChannelContent("channel1", "abc");
             var response1 =
-                await _client.PostAsync("/api/channels", content1);
+                await _client.PostAsync("/api/dashboard/channels", content1);
             response1.EnsureSuccessStatusCode();
 
             var content2 = CreateNewChannelContent("channel2", "abc");
             var response2 =
-                await _client.PostAsync("/api/channels", content2);
+                await _client.PostAsync("/api/dashboard/channels", content2);
             response2.EnsureSuccessStatusCode();
 
-            var response3 = await _client.GetAsync("/api/channels");
+            var response3 = await _client.GetAsync("/api/dashboard/channels");
             response3.EnsureSuccessStatusCode();
 
             var responseString = await response3.Content.ReadAsStringAsync();

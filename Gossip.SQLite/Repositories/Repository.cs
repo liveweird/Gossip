@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gossip.Domain;
 using Gossip.Domain.Models;
+using Gossip.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace Gossip.SQLite
+namespace Gossip.SQLite.Repositories
 {
     public abstract class Repository<T> : IRepository<T> where T : class, IEntity
     {

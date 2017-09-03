@@ -1,7 +1,7 @@
-﻿using Gossip.Domain;
-using Gossip.Domain.Models;
+﻿using Gossip.Domain.Models.Chat;
+using Gossip.Domain.Repositories.Chat;
 
-namespace Gossip.SQLite
+namespace Gossip.SQLite.Repositories.Chat
 {
     public class ChannelRepository : Repository<Channel>, IChannelRepository
     {

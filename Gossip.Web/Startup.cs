@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
-using Gossip.Application;
-using Gossip.Domain;
+using Gossip.Application.Contracts.Chat;
+using Gossip.Application.Services.Chat;
+using Gossip.Domain.Repositories.Chat;
 using Gossip.SQLite;
+using Gossip.SQLite.Repositories.Chat;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

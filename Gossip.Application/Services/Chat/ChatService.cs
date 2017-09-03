@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using Gossip.Domain;
-using Channel = Gossip.Application.Models.Channel;
-using DomainChannel = Gossip.Domain.Models.Channel;
+using Gossip.Application.Contracts.Chat;
+using Gossip.Domain.Repositories.Chat;
+using Channel = Gossip.Application.Models.Chat.Channel;
+using DomainChannel = Gossip.Domain.Models.Chat.Channel;
 
-namespace Gossip.Application
+namespace Gossip.Application.Services.Chat
 {
     public class ChatService : IChatService
     {

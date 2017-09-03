@@ -1,4 +1,4 @@
-﻿namespace Gossip.Domain.Models
+﻿namespace Gossip.Domain.Models.Chat
 {
     public class Message : IEntity
     {

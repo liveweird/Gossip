@@ -10,7 +10,7 @@ using System;
 namespace Gossip.SQLite.Migrations
 {
     [DbContext(typeof(GossipContext))]
-    [Migration("20170903175829_InitialCreate")]
+    [Migration("20170903191622_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ namespace Gossip.SQLite.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452");
 
-            modelBuilder.Entity("Gossip.Domain.Models.Channel", b =>
+            modelBuilder.Entity("Gossip.Domain.Models.Chat.Channel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -33,7 +33,7 @@ namespace Gossip.SQLite.Migrations
                     b.ToTable("Channels");
                 });
 
-            modelBuilder.Entity("Gossip.Domain.Models.Message", b =>
+            modelBuilder.Entity("Gossip.Domain.Models.Chat.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -49,9 +49,9 @@ namespace Gossip.SQLite.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("Gossip.Domain.Models.Message", b =>
+            modelBuilder.Entity("Gossip.Domain.Models.Chat.Message", b =>
                 {
-                    b.HasOne("Gossip.Domain.Models.Channel", "Channel")
+                    b.HasOne("Gossip.Domain.Models.Chat.Channel", "Channel")
                         .WithMany("Messages")
                         .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade);

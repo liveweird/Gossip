@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Gossip.Domain.Models
+namespace Gossip.Domain.Models.Chat
 {
     public class Channel : IEntity
     {

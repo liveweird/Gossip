@@ -1,4 +1,4 @@
-﻿namespace Gossip.Application.Models
+﻿namespace Gossip.Web.Models.Dashboard
 {
     public class Channel
     {
