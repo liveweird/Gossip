@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Gossip.Application;
+using Gossip.Domain;
+using Gossip.SQLite;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +21,13 @@ namespace Gossip.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddTransient<IChatService, ChatService>();
+
+            services.AddScoped<IChannelRepository, ChannelRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+
+            services.AddDbContext<GossipContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

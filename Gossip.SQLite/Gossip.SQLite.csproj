@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Gossip.Domain\Gossip.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="gossip.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

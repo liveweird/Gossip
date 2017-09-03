@@ -1,7 +1,10 @@
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using Gossip.Web.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Gossip.Web.Tests
@@ -19,14 +22,31 @@ namespace Gossip.Web.Tests
             _client = _server.CreateClient();
         }
 
+        private StringContent CreateNewChannelContent(string name, string description)
+        {
+            return new StringContent(JsonConvert.SerializeObject(new Channel { Name = name, Description = description }),
+                Encoding.UTF8,
+                "application/json");
+        }
+
         [Fact]
         public async Task ProperChannelListIsReturned()
         {
             // Act
-            var response = await _client.GetAsync("/api/channels");
-            response.EnsureSuccessStatusCode();
+            var content1 = CreateNewChannelContent("channel1", "abc");
+            var response1 =
+                await _client.PostAsync("/api/channels", content1);
+            response1.EnsureSuccessStatusCode();
 
-            var responseString = await response.Content.ReadAsStringAsync();
+            var content2 = CreateNewChannelContent("channel2", "abc");
+            var response2 =
+                await _client.PostAsync("/api/channels", content2);
+            response2.EnsureSuccessStatusCode();
+
+            var response3 = await _client.GetAsync("/api/channels");
+            response3.EnsureSuccessStatusCode();
+
+            var responseString = await response3.Content.ReadAsStringAsync();
 
             // Assert
             Assert.Equal("[\"channel1\",\"channel2\"]",

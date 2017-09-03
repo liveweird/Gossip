@@ -10,7 +10,7 @@ using System;
 namespace Gossip.SQLite.Migrations
 {
     [DbContext(typeof(GossipContext))]
-    [Migration("20170903171014_InitialCreate")]
+    [Migration("20170903175829_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

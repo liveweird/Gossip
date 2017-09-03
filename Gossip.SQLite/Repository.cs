@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Gossip.SQLite
 {
-    public class Repository<T> : IRepository<T> where T : class, IEntity
+    public abstract class Repository<T> : IRepository<T> where T : class, IEntity
     {
         private readonly GossipContext _context;
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private DbSet<T> _entities;
 
-        public Repository(GossipContext context)
+        protected Repository(GossipContext context)
         {
             _context = context;
             _entities = _context.Set<T>();
