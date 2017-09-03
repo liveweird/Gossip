@@ -10,9 +10,10 @@ using System;
 namespace Gossip.SQLite.Migrations
 {
     [DbContext(typeof(GossipContext))]
-    partial class GossipContextModelSnapshot : ModelSnapshot
+    [Migration("20170903171014_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
