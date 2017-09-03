@@ -2,7 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Gossip.Application.Contracts.Chat;
-using Gossip.Web.Models.Dashboard;
+using Gossip.Web.ViewModels.Dashboard;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gossip.Web.Controllers.Dashboard

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Gossip.Web.Models.Dashboard;
+using Gossip.Web.ViewModels.Dashboard;
 
 namespace Gossip.Web
 {
