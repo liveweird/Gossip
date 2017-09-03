@@ -4,6 +4,7 @@ using Gossip.Application.Services.Chat;
 using Gossip.Domain.Repositories.Chat;
 using Gossip.SQLite;
 using Gossip.SQLite.Repositories.Chat;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,8 @@ namespace Gossip.Web
             services.AddDbContext<GossipContext>();
 
             services.AddAutoMapper();
+
+            services.AddMediatR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
