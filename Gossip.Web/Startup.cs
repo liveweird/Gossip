@@ -1,4 +1,5 @@
-﻿using Gossip.Application;
+﻿using AutoMapper;
+using Gossip.Application;
 using Gossip.Domain;
 using Gossip.SQLite;
 using Microsoft.AspNetCore.Builder;
@@ -23,11 +24,12 @@ namespace Gossip.Web
             services.AddMvc();
 
             services.AddTransient<IChatService, ChatService>();
-
             services.AddScoped<IChannelRepository, ChannelRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
-
+        
             services.AddDbContext<GossipContext>();
+
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

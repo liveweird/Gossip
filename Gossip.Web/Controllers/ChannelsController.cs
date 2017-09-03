@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Gossip.Application;
 using Gossip.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,12 @@ namespace Gossip.Web.Controllers
     [Route("api/[controller]")]
     public class ChannelsController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly IChatService _chatService;
 
-        public ChannelsController(IChatService chatService)
+        public ChannelsController(IMapper mapper, IChatService chatService)
         {
+            _mapper = mapper;
             _chatService = chatService;
         }
 
@@ -34,7 +37,8 @@ namespace Gossip.Web.Controllers
         [HttpPost]
         public void Post([FromBody]Channel channel)
         {
-            _chatService.AddChannel(channel.Name, channel.Description);
+            var model = _mapper.Map<Channel, Application.Models.Channel>(channel);
+            _chatService.AddChannel(model);
         }
 
         // PUT api/channels/5

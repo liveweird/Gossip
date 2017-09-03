@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Gossip.Domain.Models;
+using Channel = Gossip.Application.Models.Channel;
 
 namespace Gossip.Application
 {
     public interface IChatService
     {
-        void AddChannel(string name, string description);
+        void AddChannel(Channel channel);
         IEnumerable<Channel> GetAllChannels();
     }
 }
