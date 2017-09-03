@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Domain", "Gossip.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Application", "Gossip.Application\Gossip.Application.csproj", "{1ACD5386-4605-4A7B-A0E3-66BBF4D73D4E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.SQLite.Tests", "Gossip.SQLite.Tests\Gossip.SQLite.Tests.csproj", "{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{1ACD5386-4605-4A7B-A0E3-66BBF4D73D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ACD5386-4605-4A7B-A0E3-66BBF4D73D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1ACD5386-4605-4A7B-A0E3-66BBF4D73D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
