@@ -1,4 +1,3 @@
-using System;
 using Gossip.Domain.Models.Chat;
 using Gossip.SQLite.Repositories.Chat;
 using Xunit;

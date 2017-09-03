@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Application", "Gossi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.SQLite.Tests", "Gossip.SQLite.Tests\Gossip.SQLite.Tests.csproj", "{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{934E2E5B-865D-47E1-A8D9-9234F7E34A5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{90D810CB-A922-4415-8856-5A94C10CA9B7} = {934E2E5B-865D-47E1-A8D9-9234F7E34A5A}
+		{A83B5E05-B1A1-433D-AA66-E00A8798B6FC} = {934E2E5B-865D-47E1-A8D9-9234F7E34A5A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25AA0C8E-F9F9-46A2-A487-A11160865E16}
