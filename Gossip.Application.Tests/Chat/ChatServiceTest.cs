@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Features.Variance;
 using AutoMapper;
 using Gossip.Application.Services.Chat;
+using Gossip.Domain.Events.Chat;
 using Gossip.Domain.External.GraphDataDump;
 using Gossip.Domain.Handlers.Chat;
 using Gossip.Domain.Models.Chat;
@@ -17,16 +18,16 @@ namespace Gossip.Application.Tests.Chat
     {
         private readonly IMapper _mapper;
         private readonly IContainer _container;
-        private readonly Mock<IChannelRepository> _channelRepoMock;
+        private readonly Mock<INotificationHandler<NewChannelSubmittedEvent>> _eventHandlerMock;
 
         public ChatServiceTest()
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfiles("Gossip.Web"));
             _mapper = new Mapper(config);
-            (_container, _channelRepoMock) = CreateContainer();
+            (_container, _eventHandlerMock) = CreateContainer();
         }
 
-        private static (IContainer, Mock<IChannelRepository>) CreateContainer()
+        private static (IContainer, Mock<INotificationHandler<NewChannelSubmittedEvent>>) CreateContainer()
         {
             var builder = new ContainerBuilder();
             builder.RegisterSource(new ContravariantRegistrationSource());
@@ -55,17 +56,15 @@ namespace Gossip.Application.Tests.Chat
                 })
                 .InstancePerLifetimeScope();
 
-            var channelRepoMock = new Mock<IChannelRepository>();
-            channelRepoMock.Setup(repo => repo.Insert(new Channel()))
-                .Verifiable();
+            var eventHandlerMock = new Mock<INotificationHandler<NewChannelSubmittedEvent>>();
+            eventHandlerMock.Setup(handler => handler.Handle(It.IsAny<NewChannelSubmittedEvent>())).Verifiable();
 
-            builder.RegisterInstance(channelRepoMock.Object).As<IChannelRepository>();
+            builder.RegisterInstance(new Mock<IChannelRepository>().Object).As<IChannelRepository>();
             builder.RegisterInstance(new Mock<IBlobStorage>().Object).As<IBlobStorage>();
 
-            builder.RegisterType<SaveNewChannelToDatabase>().AsImplementedInterfaces().InstancePerDependency();
-            builder.RegisterType<DumpNewChannelToBlobStorage>().AsImplementedInterfaces().InstancePerDependency();
+            builder.RegisterInstance(eventHandlerMock.Object).As<INotificationHandler<NewChannelSubmittedEvent>>();
             
-            return (builder.Build(), channelRepoMock);
+            return (builder.Build(), eventHandlerMock);
         }
 
         [Fact]
@@ -75,9 +74,10 @@ namespace Gossip.Application.Tests.Chat
             using (var scope = _container.BeginLifetimeScope())
             {
                 var mediator = scope.Resolve<IMediator>();
+                var channelRepoMock = scope.Resolve<IChannelRepository>();
 
                 // Act
-                var chatService = new ChatService(_mapper, mediator, _channelRepoMock.Object);
+                var chatService = new ChatService(_mapper, mediator, channelRepoMock);
                 chatService.AddChannel(new Models.Chat.Channel
                 {
                     Name = "abc",
@@ -85,7 +85,7 @@ namespace Gossip.Application.Tests.Chat
                 });
 
                 // Assert
-                _channelRepoMock.Verify(repo => repo.Insert(It.IsAny<Channel>()), Times.Exactly(1));
+                _eventHandlerMock.Verify(handler => handler.Handle(It.IsAny<NewChannelSubmittedEvent>()), Times.Exactly(1));
             }
         }
     }
