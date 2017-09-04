@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Gossip.Application.Contracts.Chat;
 using Gossip.Application.Services.Chat;
+using Gossip.Domain.External.GraphDataDump;
 using Gossip.Domain.Repositories.Chat;
+using Gossip.DynamoDb;
 using Gossip.SQLite;
 using Gossip.SQLite.Repositories.Chat;
 using MediatR;
@@ -29,7 +31,8 @@ namespace Gossip.Web
             services.AddTransient<IChatService, ChatService>();
             services.AddScoped<IChannelRepository, ChannelRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
-        
+            services.AddScoped<IBlobStorage, DynamoDbBlobStorage>();
+
             services.AddDbContext<GossipContext>();
 
             services.AddAutoMapper();

@@ -14,13 +14,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.Web.Tests", "Gossip.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.SQLite", "Gossip.SQLite\Gossip.SQLite.csproj", "{713C2DCB-726F-4859-89CB-671A9177075F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Domain", "Gossip.Domain\Gossip.Domain.csproj", "{B8C38972-C550-4880-8C7D-32AA95DE46F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.Domain", "Gossip.Domain\Gossip.Domain.csproj", "{B8C38972-C550-4880-8C7D-32AA95DE46F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Application", "Gossip.Application\Gossip.Application.csproj", "{1ACD5386-4605-4A7B-A0E3-66BBF4D73D4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.Application", "Gossip.Application\Gossip.Application.csproj", "{1ACD5386-4605-4A7B-A0E3-66BBF4D73D4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.SQLite.Tests", "Gossip.SQLite.Tests\Gossip.SQLite.Tests.csproj", "{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.SQLite.Tests", "Gossip.SQLite.Tests\Gossip.SQLite.Tests.csproj", "{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{934E2E5B-865D-47E1-A8D9-9234F7E34A5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{5A042EFE-A10E-4B6A-9A3A-3F39CC89D030}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.DynamoDb", "Gossip.DynamoDb\Gossip.DynamoDb.csproj", "{E5FE5F28-9443-4E85-A892-0B2B296A03FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,13 +56,19 @@ Global
 		{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A83B5E05-B1A1-433D-AA66-E00A8798B6FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5FE5F28-9443-4E85-A892-0B2B296A03FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5FE5F28-9443-4E85-A892-0B2B296A03FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5FE5F28-9443-4E85-A892-0B2B296A03FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5FE5F28-9443-4E85-A892-0B2B296A03FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{90D810CB-A922-4415-8856-5A94C10CA9B7} = {934E2E5B-865D-47E1-A8D9-9234F7E34A5A}
+		{713C2DCB-726F-4859-89CB-671A9177075F} = {5A042EFE-A10E-4B6A-9A3A-3F39CC89D030}
 		{A83B5E05-B1A1-433D-AA66-E00A8798B6FC} = {934E2E5B-865D-47E1-A8D9-9234F7E34A5A}
+		{E5FE5F28-9443-4E85-A892-0B2B296A03FF} = {5A042EFE-A10E-4B6A-9A3A-3F39CC89D030}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25AA0C8E-F9F9-46A2-A487-A11160865E16}

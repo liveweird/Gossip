@@ -5,11 +5,11 @@ using MediatR;
 
 namespace Gossip.Domain.Handlers.Chat
 {
-    public class NewChannelSubmittedEventHandler : INotificationHandler<NewChannelSubmittedEvent>
+    public class SaveNewChannelToDatabase : INotificationHandler<NewChannelSubmittedEvent>
     {
         private readonly IChannelRepository _channelRepository;
 
-        public NewChannelSubmittedEventHandler(IChannelRepository repository)
+        public SaveNewChannelToDatabase(IChannelRepository repository)
         {
             _channelRepository = repository;
         }
