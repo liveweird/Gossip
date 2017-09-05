@@ -3,7 +3,6 @@ using Autofac;
 using Autofac.Features.Variance;
 using Gossip.Domain.Events.Chat;
 using Gossip.Domain.External.GraphDataDump;
-using Gossip.Domain.Handlers.Chat;
 using Gossip.Domain.Models.Chat;
 using Gossip.Domain.Repositories.Chat;
 using MediatR;
@@ -15,14 +14,14 @@ namespace Gossip.Domain.Tests.Chat
     public class ChannelsTest
     {
         private readonly IContainer _container;
-        private readonly Mock<IChannelRepository> _channelRepoMock;
+        private readonly Mock<INotificationHandler<NewMessageCreatedEvent>> _eventHandlerMock;
 
         public ChannelsTest()
         {
-            (_container, _channelRepoMock) = CreateContainer();
+            (_container, _eventHandlerMock) = CreateContainer();
         }
 
-        private static (IContainer, Mock<IChannelRepository>) CreateContainer()
+        private static (IContainer, Mock<INotificationHandler<NewMessageCreatedEvent>>) CreateContainer()
         {
             var builder = new ContainerBuilder();
             builder.RegisterSource(new ContravariantRegistrationSource());
@@ -51,39 +50,33 @@ namespace Gossip.Domain.Tests.Chat
                 })
                 .InstancePerLifetimeScope();
 
-            var channelRepoMock = new Mock<IChannelRepository>();
-            channelRepoMock.Setup(repo => repo.Insert(new Channel()))
-                .Verifiable();
+            var eventHandlerMock = new Mock<INotificationHandler<NewMessageCreatedEvent>>();
+            eventHandlerMock.Setup(handler => handler.Handle(It.IsAny<NewMessageCreatedEvent>())).Verifiable();
 
-            builder.RegisterInstance(channelRepoMock.Object).As<IChannelRepository>();
+            builder.RegisterInstance(new Mock<IChannelRepository>()).As<IChannelRepository>();
             builder.RegisterInstance(new Mock<IBlobStorage>().Object).As<IBlobStorage>();
 
-            builder.RegisterType<SaveNewChannelToDatabase>().AsImplementedInterfaces().InstancePerDependency();
-            builder.RegisterType<DumpNewChannelToBlobStorage>().AsImplementedInterfaces().InstancePerDependency();
+            builder.RegisterInstance(eventHandlerMock.Object).As<INotificationHandler<NewMessageCreatedEvent>>();
 
-            return (builder.Build(), channelRepoMock);
+            return (builder.Build(), eventHandlerMock);
         }
 
         [Fact]
-        public async void AddChannel()
+        public void AddMessageSideEffect()
         {
             // Arrange
-            var mock = new Mock<IChannelRepository>();
-            mock.Setup(repo => repo.GetAll()).Returns(new List<Channel>());
-
             using (var scope = _container.BeginLifetimeScope())
             {
-                var mediator = scope.Resolve<IMediator>();
-
                 // Act
-                await mediator.Publish(new NewChannelSubmittedEvent
+                var channel = new Channel
                 {
                     Name = "abc",
                     Description = "def"
-                });
+                };
+                channel.AddMessage(null, "ghi");
 
                 // Assert
-                _channelRepoMock.Verify(repo => repo.Insert(It.IsAny<Channel>()), Times.Exactly(1));
+                _eventHandlerMock.Verify(handler => handler.Handle(It.IsAny<NewMessageCreatedEvent>()), Times.Exactly(1));
             }
         }
     }

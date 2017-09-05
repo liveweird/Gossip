@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Gossip.Application.Contracts.Chat;
 using Gossip.Domain.Events.Chat;
@@ -12,29 +13,31 @@ namespace Gossip.Application.Services.Chat
     public class ChatService : IChatService
     {
         private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
         private readonly IChannelRepository _channelRepository;
 
-        public ChatService(IMapper mapper, IMediator mediator, IChannelRepository channelRepository)
+        public ChatService(IMapper mapper, IChannelRepository channelRepository)
         {
             _mapper = mapper;
-            _mediator = mediator;
             _channelRepository = channelRepository;
         }
 
-        public async void AddChannel(Channel channel)
+        public void AddChannel(Channel channel)
         {
-            await _mediator.Publish(new NewChannelSubmittedEvent
-            {
-                Name = channel.Name,
-                Description = channel.Description
-            });
+            var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
+            _channelRepository.Insert(toInsert);
         }
 
         public IEnumerable<Channel> GetAllChannels()
         {
             var channels = _channelRepository.GetAll();
             return _mapper.Map<IEnumerable<DomainChannel>, IEnumerable<Channel>>(channels);
+        }
+
+        public async Task<bool> AddMessage(int channelId, int? parentId, string content)
+        {
+            var channel = _channelRepository.Get(channelId);
+            channel.AddMessage(parentId, content);
+            return await _channelRepository.UnitOfWork.SaveEntitiesAsync();
         }
     }
 }

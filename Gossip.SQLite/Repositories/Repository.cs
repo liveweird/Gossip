@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Gossip.SQLite.Repositories
 {
-    public abstract class Repository<T> : IRepository<T> where T : class, IEntity
+    public abstract class Repository<T> : IRepository<T> where T : class, IEntity, IAggregateRoot
     {
         private readonly GossipContext _context;
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
@@ -18,6 +18,8 @@ namespace Gossip.SQLite.Repositories
             _context = context;
             _entities = _context.Set<T>();
         }
+
+        public IUnitOfWork UnitOfWork => _context;
 
         public IEnumerable<T> GetAll()
         {
@@ -59,11 +61,6 @@ namespace Gossip.SQLite.Repositories
             }
 
             _context.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        public void SaveChanges()
-        {
             _context.SaveChanges();
         }
     }
