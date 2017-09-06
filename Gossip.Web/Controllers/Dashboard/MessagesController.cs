@@ -8,35 +8,36 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gossip.Web.Controllers.Dashboard
 {
-    [Route("api/dashboard/[controller]")]
-    public class ChannelsController : Controller
+    [Route("api/dashboard/channels/{channelId}/[controller]")]
+    public class MessagesController : Controller
     {
         private readonly IMapper _mapper;
         private readonly IChatService _chatService;
 
-        public ChannelsController(IMapper mapper, IChatService chatService)
+        public MessagesController(IMapper mapper, IChatService chatService)
         {
             _mapper = mapper;
             _chatService = chatService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<IEnumerable<string>> Get(int channelId)
         {
-            return (await _chatService.GetAllChannels()).Select(p => p.Name);
+            return (await _chatService.GetAllMessagesInChannel(channelId)).Select(c => c.Content);
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get(int id, int channelId)
         {
-            return "channel";
+            return "message";
         }
 
         [HttpPost]
-        public void Post([FromBody]Channel channel)
+        public void Post([FromBody]Message message, int channelId)
         {
-            var model = _mapper.Map<Channel, Application.Models.Chat.Channel>(channel);
-            _chatService.AddChannel(model);
+            message.ChannelId = channelId;
+            var model = _mapper.Map<Message, Application.Models.Chat.Message>(message);
+            _chatService.AddMessage(model);
         }
 
         [HttpPut("{id}")]

@@ -50,7 +50,7 @@ namespace Gossip.SQLite.Tests.Chat
         }
 
         [Fact]
-        public void AddAndVerifyChannels()
+        public async void AddAndVerifyChannels()
         {
             // Arrange
             using (var scope = _container.BeginLifetimeScope())
@@ -62,8 +62,8 @@ namespace Gossip.SQLite.Tests.Chat
                     ctx.Channels.RemoveRange(ctx.Channels);
 
                     // Act
-                    channelRepo.Insert(new Channel {Name = "abc", Description = "def"});
-                    var channels = channelRepo.GetAll();
+                    channelRepo.InsertChannel(new Channel {Name = "abc", Description = "def"});
+                    var channels = await channelRepo.GetAllChannels();
 
                     // Assert
                     Assert.Collection(channels, p =>

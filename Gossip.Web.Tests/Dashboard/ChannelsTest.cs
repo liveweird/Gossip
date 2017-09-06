@@ -29,16 +29,23 @@ namespace Gossip.Web.Tests.Dashboard
                 "application/json");
         }
 
+        private StringContent CreateNewMessageContent(int? parentId, string content)
+        {
+            return new StringContent(JsonConvert.SerializeObject(new Message { ParentId = parentId, Content = content }),
+                Encoding.UTF8,
+                "application/json");
+        }
+
         [Fact]
-        public async Task ProperChannelListIsReturned()
+        public async Task AddTwoChannels()
         {
             // Act
-            var content1 = CreateNewChannelContent("channel1", "abc");
+            var content1 = CreateNewChannelContent("channelA", "abc");
             var response1 =
                 await _client.PostAsync("/api/dashboard/channels", content1);
             response1.EnsureSuccessStatusCode();
 
-            var content2 = CreateNewChannelContent("channel2", "abc");
+            var content2 = CreateNewChannelContent("channelB", "abc");
             var response2 =
                 await _client.PostAsync("/api/dashboard/channels", content2);
             response2.EnsureSuccessStatusCode();
@@ -49,7 +56,32 @@ namespace Gossip.Web.Tests.Dashboard
             var responseString = await response3.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal("[\"channel1\",\"channel2\"]",
+            Assert.Equal("[\"channelA\",\"channelB\"]",
+                responseString);
+        }
+
+        [Fact]
+        public async Task AddMessageToChannel()
+        {
+            // Act
+            var content1 = CreateNewChannelContent("channelA", "abc");
+            var response1 =
+                await _client.PostAsync("/api/dashboard/channels", content1);
+            response1.EnsureSuccessStatusCode();
+
+            var content2 = CreateNewMessageContent(null, "def");
+            var channelId = 1;
+            var response2 =
+                await _client.PostAsync($"/api/dashboard/channels/{channelId}/messages", content2);
+            response2.EnsureSuccessStatusCode();
+
+            var response3 = await _client.GetAsync($"/api/dashboard/channels/{channelId}/messages");
+            response3.EnsureSuccessStatusCode();
+
+            var responseString = await response3.Content.ReadAsStringAsync();
+
+            // Assert
+            Assert.Equal("[\"def\"]",
                 responseString);
         }
     }

@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Gossip.Application.Contracts.Chat;
 using Gossip.Domain.Repositories.Chat;
 using Channel = Gossip.Application.Models.Chat.Channel;
 using DomainChannel = Gossip.Domain.Models.Chat.Channel;
+using Message = Gossip.Application.Models.Chat.Message;
+using DomainMessage = Gossip.Domain.Models.Chat.Message;
 
 namespace Gossip.Application.Services.Chat
 {
@@ -22,20 +26,27 @@ namespace Gossip.Application.Services.Chat
         public async Task<bool> AddChannel(Channel channel)
         {
             var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
-            _channelRepository.Insert(toInsert);
+            _channelRepository.InsertChannel(toInsert);
             return await _channelRepository.UnitOfWork.SaveEntitiesAsync();
         }
 
-        public IEnumerable<Channel> GetAllChannels()
+        public async Task<IEnumerable<Channel>> GetAllChannels()
         {
-            var channels = _channelRepository.GetAll();
+            var channels = await _channelRepository.GetAllChannels();
             return _mapper.Map<IEnumerable<DomainChannel>, IEnumerable<Channel>>(channels);
         }
 
-        public async Task<bool> AddMessage(int channelId, int? parentId, string content)
+        public async Task<IEnumerable<Message>> GetAllMessagesInChannel(int channelId)
         {
-            var channel = _channelRepository.Get(channelId);
-            channel.AddMessage(parentId, content);
+            var channel = await _channelRepository.GetAsync(channelId) ?? throw new ArgumentException("Provide channel identifier is not proper!");
+            return _mapper.Map<IEnumerable<DomainMessage>, IEnumerable<Message>>(channel.Messages.ToList());
+        }
+
+        public async Task<bool> AddMessage(Message message)
+        {
+            var channel = await _channelRepository.GetAsync(message.ChannelId);
+            channel.AddMessage(message.ParentId, message.Content);
+            _channelRepository.UpdateChannel(channel);
             return await _channelRepository.UnitOfWork.SaveEntitiesAsync();
         }
     }

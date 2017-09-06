@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Features.Variance;
 using AutoMapper;
@@ -77,7 +79,7 @@ namespace Gossip.Application.Tests.Chat
             var unitMock = new Mock<IUnitOfWork>();
             unitMock.Setup(unit => unit.SaveEntitiesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
             var channelRepoMock = new Mock<IChannelRepository>();
-            channelRepoMock.Setup(repo => repo.Insert(It.IsAny<Channel>())).Verifiable();
+            channelRepoMock.Setup(repo => repo.InsertChannel(It.IsAny<Channel>())).Verifiable();
             channelRepoMock.Setup(repo => repo.UnitOfWork).Returns(unitMock.Object);
 
             // Act
@@ -89,7 +91,7 @@ namespace Gossip.Application.Tests.Chat
             });
 
             // Assert
-            channelRepoMock.Verify(repo => repo.Insert(It.IsAny<Channel>()));
+            channelRepoMock.Verify(repo => repo.InsertChannel(It.IsAny<Channel>()));
         }
 
         [Fact]
@@ -97,7 +99,7 @@ namespace Gossip.Application.Tests.Chat
         {
             // Arrange
             var mock = new Mock<IChannelRepository>();
-            mock.Setup(repo => repo.GetAll()).Returns(new List<Channel>());
+            mock.Setup(repo => repo.GetAllChannels()).Returns(Task.FromResult(new List<Channel>().AsEnumerable()));
 
             using (var scope = _container.BeginLifetimeScope())
             {

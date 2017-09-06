@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Gossip.Domain.Models.Chat
+﻿namespace Gossip.Domain.Models.Chat
 {
     public class Message : Entity
     {
