@@ -1,6 +1,6 @@
 ﻿using Gossip.Domain.Models.Chat;
 
-namespace Gossip.Domain.External.GraphDataDump
+namespace Gossip.Domain.External.BlobStorage
 {
     public interface IBlobStorage
     {

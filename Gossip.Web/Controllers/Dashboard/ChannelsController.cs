@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Gossip.Application.Contracts.Chat;
+using Gossip.Contract.Chat;
 using Gossip.Web.ViewModels.Dashboard;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +35,7 @@ namespace Gossip.Web.Controllers.Dashboard
         [HttpPost]
         public void Post([FromBody]Channel channel)
         {
-            var model = _mapper.Map<Channel, Application.Models.Chat.Channel>(channel);
+            var model = _mapper.Map<Channel, Contract.DTO.Chat.Channel>(channel);
             _chatService.AddChannel(model);
         }
 

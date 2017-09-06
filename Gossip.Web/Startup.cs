@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Gossip.Application.Contracts.Chat;
 using Gossip.Application.Services.Chat;
-using Gossip.Domain.External.GraphDataDump;
+using Gossip.Contract.Chat;
+using Gossip.Domain.External.BlobStorage;
 using Gossip.Domain.Repositories.Chat;
 using Gossip.DynamoDb;
 using Gossip.SQLite;

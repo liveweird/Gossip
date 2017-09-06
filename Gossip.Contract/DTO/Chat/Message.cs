@@ -1,4 +1,4 @@
-﻿namespace Gossip.Application.Models.Chat
+﻿namespace Gossip.Contract.DTO.Chat
 {
     public class Message
     {

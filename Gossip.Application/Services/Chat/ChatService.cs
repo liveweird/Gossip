@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Gossip.Application.Contracts.Chat;
+using Gossip.Contract.Chat;
 using Gossip.Domain.Repositories.Chat;
-using Channel = Gossip.Application.Models.Chat.Channel;
+using Channel = Gossip.Contract.DTO.Chat.Channel;
 using DomainChannel = Gossip.Domain.Models.Chat.Channel;
-using Message = Gossip.Application.Models.Chat.Message;
+using Message = Gossip.Contract.DTO.Chat.Message;
 using DomainMessage = Gossip.Domain.Models.Chat.Message;
 
 namespace Gossip.Application.Services.Chat

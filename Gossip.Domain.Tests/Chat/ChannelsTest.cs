@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Autofac;
 using Autofac.Features.Variance;
 using Gossip.Domain.Events.Chat;
-using Gossip.Domain.External.GraphDataDump;
+using Gossip.Domain.External.BlobStorage;
 using Gossip.Domain.Models.Chat;
 using Gossip.Domain.Repositories.Chat;
 using MediatR;

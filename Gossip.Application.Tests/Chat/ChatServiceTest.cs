@@ -8,7 +8,7 @@ using AutoMapper;
 using Gossip.Application.Handlers.Chat;
 using Gossip.Application.Services.Chat;
 using Gossip.Domain.Events.Chat;
-using Gossip.Domain.External.GraphDataDump;
+using Gossip.Domain.External.BlobStorage;
 using Gossip.Domain.Models.Chat;
 using Gossip.Domain.Repositories;
 using Gossip.Domain.Repositories.Chat;
@@ -84,7 +84,7 @@ namespace Gossip.Application.Tests.Chat
 
             // Act
             var chatService = new ChatService(_mapper, channelRepoMock.Object);
-            await chatService.AddChannel(new Models.Chat.Channel
+            await chatService.AddChannel(new Contract.DTO.Chat.Channel
             {
                 Name = "abc",
                 Description = "def"

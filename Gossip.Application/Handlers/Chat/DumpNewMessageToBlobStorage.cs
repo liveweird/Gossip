@@ -1,5 +1,5 @@
 ﻿using Gossip.Domain.Events.Chat;
-using Gossip.Domain.External.GraphDataDump;
+using Gossip.Domain.External.BlobStorage;
 using Gossip.Domain.Models.Chat;
 using MediatR;
 

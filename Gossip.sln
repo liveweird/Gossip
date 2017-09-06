@@ -24,11 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{934E2E5B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{5A042EFE-A10E-4B6A-9A3A-3F39CC89D030}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.DynamoDb", "Gossip.DynamoDb\Gossip.DynamoDb.csproj", "{E5FE5F28-9443-4E85-A892-0B2B296A03FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.DynamoDb", "Gossip.DynamoDb\Gossip.DynamoDb.csproj", "{E5FE5F28-9443-4E85-A892-0B2B296A03FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Domain.Tests", "Gossip.Domain.Tests\Gossip.Domain.Tests.csproj", "{6DDA39C3-0F22-42FC-B33D-4612823E86BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.Domain.Tests", "Gossip.Domain.Tests\Gossip.Domain.Tests.csproj", "{6DDA39C3-0F22-42FC-B33D-4612823E86BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Application.Tests", "Gossip.Application.Tests\Gossip.Application.Tests.csproj", "{A186B54E-A356-427C-A489-ECFEBDBB2207}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.Application.Tests", "Gossip.Application.Tests\Gossip.Application.Tests.csproj", "{A186B54E-A356-427C-A489-ECFEBDBB2207}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Contract", "Gossip.Contract\Gossip.Contract.csproj", "{244387ED-E796-40DA-A737-248970596192}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,10 @@ Global
 		{A186B54E-A356-427C-A489-ECFEBDBB2207}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A186B54E-A356-427C-A489-ECFEBDBB2207}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A186B54E-A356-427C-A489-ECFEBDBB2207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{244387ED-E796-40DA-A737-248970596192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{244387ED-E796-40DA-A737-248970596192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{244387ED-E796-40DA-A737-248970596192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{244387ED-E796-40DA-A737-248970596192}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

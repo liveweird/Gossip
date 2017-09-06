@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Gossip.Contract\Gossip.Contract.csproj" />
     <ProjectReference Include="..\Gossip.Domain\Gossip.Domain.csproj" />
   </ItemGroup>
 

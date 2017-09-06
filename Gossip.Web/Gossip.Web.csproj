@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gossip.Application\Gossip.Application.csproj" />
+    <ProjectReference Include="..\Gossip.Contract\Gossip.Contract.csproj" />
     <ProjectReference Include="..\Gossip.DynamoDb\Gossip.DynamoDb.csproj" />
     <ProjectReference Include="..\Gossip.SQLite\Gossip.SQLite.csproj" />
   </ItemGroup>

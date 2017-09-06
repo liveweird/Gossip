@@ -1,4 +1,4 @@
-﻿using Gossip.Domain.External.GraphDataDump;
+﻿using Gossip.Domain.External.BlobStorage;
 using Gossip.Domain.Models.Chat;
 
 namespace Gossip.DynamoDb

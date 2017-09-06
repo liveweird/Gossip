@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gossip.Application.Models.Chat;
-using Channel = Gossip.Application.Models.Chat.Channel;
+using Gossip.Contract.DTO.Chat;
+using Channel = Gossip.Contract.DTO.Chat.Channel;
 
-namespace Gossip.Application.Contracts.Chat
+namespace Gossip.Contract.Chat
 {
     public interface IChatService
     {
