@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Gossip.Application.Contracts.Chat;
-using Gossip.Domain.Events.Chat;
 using Gossip.Domain.Repositories.Chat;
-using MediatR;
 using Channel = Gossip.Application.Models.Chat.Channel;
 using DomainChannel = Gossip.Domain.Models.Chat.Channel;
 
@@ -21,10 +19,11 @@ namespace Gossip.Application.Services.Chat
             _channelRepository = channelRepository;
         }
 
-        public void AddChannel(Channel channel)
+        public async Task<bool> AddChannel(Channel channel)
         {
             var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
             _channelRepository.Insert(toInsert);
+            return await _channelRepository.UnitOfWork.SaveEntitiesAsync();
         }
 
         public IEnumerable<Channel> GetAllChannels()

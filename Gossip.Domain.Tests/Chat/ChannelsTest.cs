@@ -53,7 +53,7 @@ namespace Gossip.Domain.Tests.Chat
             var eventHandlerMock = new Mock<INotificationHandler<NewMessageCreatedEvent>>();
             eventHandlerMock.Setup(handler => handler.Handle(It.IsAny<NewMessageCreatedEvent>())).Verifiable();
 
-            builder.RegisterInstance(new Mock<IChannelRepository>()).As<IChannelRepository>();
+            builder.RegisterInstance(new Mock<IChannelRepository>().Object).As<IChannelRepository>();
             builder.RegisterInstance(new Mock<IBlobStorage>().Object).As<IBlobStorage>();
 
             builder.RegisterInstance(eventHandlerMock.Object).As<INotificationHandler<NewMessageCreatedEvent>>();
@@ -62,18 +62,22 @@ namespace Gossip.Domain.Tests.Chat
         }
 
         [Fact]
-        public void AddMessageSideEffect()
+        public async void AddMessageSideEffect()
         {
             // Arrange
             using (var scope = _container.BeginLifetimeScope())
             {
+                var mediator = scope.Resolve<IMediator>();
+
                 // Act
                 var channel = new Channel
                 {
                     Name = "abc",
                     Description = "def"
                 };
+
                 channel.AddMessage(null, "ghi");
+                await mediator.DispatchDomainEventsAsync(new List<Channel> { channel });
 
                 // Assert
                 _eventHandlerMock.Verify(handler => handler.Handle(It.IsAny<NewMessageCreatedEvent>()), Times.Exactly(1));

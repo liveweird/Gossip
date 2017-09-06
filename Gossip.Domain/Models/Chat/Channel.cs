@@ -7,11 +7,15 @@ namespace Gossip.Domain.Models.Chat
 {
     public class Channel : Entity, IAggregateRoot
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
         public List<Message> Messages { get; set; }
+
+        public Channel()
+        {
+            Messages = new List<Message>();
+        }
 
         public bool IsEmpty()
         {

@@ -30,7 +30,6 @@ namespace Gossip.Web
 
             services.AddTransient<IChatService, ChatService>();
             services.AddScoped<IChannelRepository, ChannelRepository>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IBlobStorage, DynamoDbBlobStorage>();
 
             services.AddDbContext<GossipContext>();
