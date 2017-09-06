@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Gossip.Contract.DTO.Chat;
 using Channel = Gossip.Contract.DTO.Chat.Channel;
 
-namespace Gossip.Contract.Chat
+namespace Gossip.Contract.Interfaces.Chat
 {
     public interface IChatService
     {

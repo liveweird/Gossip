@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Gossip.Contract.Chat;
+using Gossip.Contract.Interfaces.Chat;
 using Gossip.Web.ViewModels.Dashboard;
 using Microsoft.AspNetCore.Mvc;
 
