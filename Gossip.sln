@@ -30,7 +30,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.Domain.Tests", "Goss
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.Application.Tests", "Gossip.Application.Tests\Gossip.Application.Tests.csproj", "{A186B54E-A356-427C-A489-ECFEBDBB2207}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.Contract", "Gossip.Contract\Gossip.Contract.csproj", "{244387ED-E796-40DA-A737-248970596192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gossip.Contract", "Gossip.Contract\Gossip.Contract.csproj", "{244387ED-E796-40DA-A737-248970596192}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gossip.DynamoDb.Tests", "Gossip.DynamoDb.Tests\Gossip.DynamoDb.Tests.csproj", "{C77DCB5D-6D9C-49E8-8A0D-2430F21D16A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,10 @@ Global
 		{244387ED-E796-40DA-A737-248970596192}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{244387ED-E796-40DA-A737-248970596192}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{244387ED-E796-40DA-A737-248970596192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C77DCB5D-6D9C-49E8-8A0D-2430F21D16A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C77DCB5D-6D9C-49E8-8A0D-2430F21D16A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C77DCB5D-6D9C-49E8-8A0D-2430F21D16A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C77DCB5D-6D9C-49E8-8A0D-2430F21D16A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{E5FE5F28-9443-4E85-A892-0B2B296A03FF} = {5A042EFE-A10E-4B6A-9A3A-3F39CC89D030}
 		{6DDA39C3-0F22-42FC-B33D-4612823E86BB} = {934E2E5B-865D-47E1-A8D9-9234F7E34A5A}
 		{A186B54E-A356-427C-A489-ECFEBDBB2207} = {934E2E5B-865D-47E1-A8D9-9234F7E34A5A}
+		{C77DCB5D-6D9C-49E8-8A0D-2430F21D16A5} = {934E2E5B-865D-47E1-A8D9-9234F7E34A5A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25AA0C8E-F9F9-46A2-A487-A11160865E16}
