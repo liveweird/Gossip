@@ -16,7 +16,7 @@ namespace Gossip.Application.Handlers.Chat
 
         public void Handle(NewMessageCreatedEvent notification)
         {
-            _blobStorage.DoSomething(new Message { Content = notification.Content });
+            _blobStorage.DoSomething(new Message(notification.Content));
         }
     }
 }
