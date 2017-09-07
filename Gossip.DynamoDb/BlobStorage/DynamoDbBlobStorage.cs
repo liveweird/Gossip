@@ -1,7 +1,7 @@
 ﻿using Gossip.Domain.External.BlobStorage;
 using Gossip.Domain.Models.Chat;
 
-namespace Gossip.DynamoDb
+namespace Gossip.DynamoDb.BlobStorage
 {
     public class DynamoDbBlobStorage : IBlobStorage
     {

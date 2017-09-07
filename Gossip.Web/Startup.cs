@@ -3,7 +3,7 @@ using Gossip.Application.Services.Chat;
 using Gossip.Contract.Interfaces.Chat;
 using Gossip.Domain.External.BlobStorage;
 using Gossip.Domain.Repositories.Chat;
-using Gossip.DynamoDb;
+using Gossip.DynamoDb.BlobStorage;
 using Gossip.SQLite;
 using Gossip.SQLite.Repositories.Chat;
 using MediatR;
