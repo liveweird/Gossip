@@ -8,14 +8,14 @@ namespace Gossip.Domain
 {
     public static class DomainMediatorExtension
     {
-        public static async Task DispatchDomainEventsAsync(this IMediator mediator, IEnumerable<Entity> entities)
+        public static async Task DispatchDomainEventsAsync(this IMediator mediator, IEnumerable<AggregateRoot> entities)
         {
             var domainEvents = entities
                 .SelectMany(x => x.DomainEvents)
                 .ToList();
 
             entities.ToList()
-                .ForEach(entity => entity.DomainEvents.Clear());
+                .ForEach(entity => entity.ClearEvents());
 
             var tasks = domainEvents
                 .Select(async (domainEvent) => {

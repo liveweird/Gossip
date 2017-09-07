@@ -5,7 +5,7 @@ using Gossip.Domain.Events.Chat;
 
 namespace Gossip.Domain.Models.Chat
 {
-    public class Channel : Entity, IAggregateRoot
+    public class Channel : AggregateRoot, IAggregateRoot
     {
         private List<Message> _mesasges;
         

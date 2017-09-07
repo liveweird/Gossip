@@ -10,7 +10,7 @@ namespace Gossip.SQLite
         public static async Task DispatchDomainEventsAsync(this IMediator mediator, GossipContext ctx)
         {
             var entities = ctx.ChangeTracker
-                .Entries<Entity>()
+                .Entries<AggregateRoot>()
                 .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any())
                 .Select(p => p.Entity);
 
