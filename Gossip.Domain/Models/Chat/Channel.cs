@@ -5,16 +5,19 @@ using Gossip.Domain.Events.Chat;
 
 namespace Gossip.Domain.Models.Chat
 {
-    public class Channel : Entity, IAggregateRoot
+    public class Channel : AggregateRoot, IAggregateRoot
     {
+        private List<Message> _mesasges;
+        
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public List<Message> Messages { get; set; }
+        public IReadOnlyCollection<Message> Messages => _mesasges.AsReadOnly();
 
-        public Channel()
+        public Channel(string name)
         {
-            Messages = new List<Message>();
+            Name = name;
+            _mesasges = new List<Message>();
         }
 
         public bool IsEmpty()
@@ -22,18 +25,9 @@ namespace Gossip.Domain.Models.Chat
             return Messages.Count == 0;
         }
 
-        public void AddMessage(int? parentId, string content)
+        public void AddMessage(string content, int? parentMessageId = null)
         {
-            var parent = parentId != null ? Messages.Single(m => m.Id == parentId) : null;
-
-            Messages.Add(new Message
-            {
-                Content = content,
-                ChannelId = Id,
-                Channel = this,
-                ParentId = parentId,
-                Parent = parent
-            });
+            _mesasges.Add(new Message(content, parentMessageId));
 
             RaiseDomainEvent(new NewMessageCreatedEvent
             {
@@ -41,16 +35,9 @@ namespace Gossip.Domain.Models.Chat
             });
         }
 
-        public void RemoveMessage(int messageId)
+        public void RemoveMessage(Message message)
         {
-            var toBeRemoved = Messages.Single(m => m.Id == messageId);
-
-            if (Messages.Any(m => m.ParentId == messageId))
-            {
-                throw new InvalidOperationException("Message has children");
-            }
-
-            Messages.Remove(toBeRemoved);
+            _mesasges.Remove(message);
         }
     }
 }

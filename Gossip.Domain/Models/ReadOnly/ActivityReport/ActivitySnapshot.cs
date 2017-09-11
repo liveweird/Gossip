@@ -2,5 +2,6 @@
 {
     public class ActivitySnapshot : IAggregateRoot
     {
+        public int Id { get; }
     }
 }

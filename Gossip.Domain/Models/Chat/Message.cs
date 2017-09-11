@@ -4,16 +4,13 @@
     {
         public string Content { get; set; }
         public int Likes { get; set; }
+        public int? ParentId { get; }
 
-        public int ChannelId { get; set; }
-        public Channel Channel { get; set; }
-
-        public int? ParentId { get; set; }
-        public Message Parent { get; set; }
-
-        public Message()
+        public Message(string content, int? parentMessageId = null)
         {
+            Content = content;
             Likes = 0;
+            ParentId = parentMessageId;
         }
 
         public void Like()

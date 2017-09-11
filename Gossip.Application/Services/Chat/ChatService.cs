@@ -45,7 +45,7 @@ namespace Gossip.Application.Services.Chat
         public async Task<bool> AddMessage(Message message)
         {
             var channel = await _channelRepository.GetAsync(message.ChannelId);
-            channel.AddMessage(message.ParentId, message.Content);
+            channel.AddMessage(message.Content, message.ParentId);
             _channelRepository.UpdateChannel(channel);
             return await _channelRepository.UnitOfWork.SaveEntitiesAsync();
         }

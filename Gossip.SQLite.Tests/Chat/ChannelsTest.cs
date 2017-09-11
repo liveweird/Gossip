@@ -62,7 +62,7 @@ namespace Gossip.SQLite.Tests.Chat
                     ctx.Channels.RemoveRange(ctx.Channels);
 
                     // Act
-                    channelRepo.InsertChannel(new Channel {Name = "abc", Description = "def"});
+                    channelRepo.InsertChannel(new Channel("abc") { Description = "def"});
                     var channels = await channelRepo.GetAllChannels();
 
                     // Assert
