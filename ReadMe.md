@@ -1,5 +1,18 @@
-Reference Architecture
+# Reference Architecture
 ---
+
+## How to run
+
+```
+dotnet restore
+dotnet build
+cd Gossip.SQLite
+dotnet ef database update
+cd ..
+dotnet test
+```
+
+## Composition
 
 1. Gossip.Web - Web API for front-end JS apps
 1. Gossip.Contract - application services' contract Gossip.Web is running against
