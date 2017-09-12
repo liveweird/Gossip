@@ -2,7 +2,7 @@
 
 namespace Gossip.Domain.Repositories.ReadOnly.ActivityReport
 {
-    public interface IActivitySnapshotRepository : IRepository<ActivitySnapshot>
+    public interface IActivitySnapshotRepository : IReadOnlyRepository<ActivitySnapshot>
     {
     }
 }

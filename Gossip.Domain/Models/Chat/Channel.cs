@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Gossip.Domain.Events.Chat;
 
 namespace Gossip.Domain.Models.Chat
 {
-    public class Channel : AggregateRoot, IAggregateRoot
+    public class Channel : AggregateRoot
     {
-        private List<Message> _mesasges;
+        private List<Message> _messages;
         
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public IReadOnlyCollection<Message> Messages => _mesasges.AsReadOnly();
+        public IReadOnlyCollection<Message> Messages => _messages.AsReadOnly();
 
         public Channel(string name)
         {
             Name = name;
-            _mesasges = new List<Message>();
+            _messages = new List<Message>();
         }
 
         public bool IsEmpty()
@@ -27,7 +25,7 @@ namespace Gossip.Domain.Models.Chat
 
         public void AddMessage(string content, int? parentMessageId = null)
         {
-            _mesasges.Add(new Message(content, parentMessageId));
+            _messages.Add(new Message(content, parentMessageId));
 
             RaiseDomainEvent(new NewMessageCreatedEvent
             {
@@ -37,7 +35,7 @@ namespace Gossip.Domain.Models.Chat
 
         public void RemoveMessage(Message message)
         {
-            _mesasges.Remove(message);
+            _messages.Remove(message);
         }
     }
 }
