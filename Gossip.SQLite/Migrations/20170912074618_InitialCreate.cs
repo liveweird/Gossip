@@ -28,8 +28,10 @@ namespace Gossip.SQLite.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ChannelId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: true)
+                    ChannelId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
+                    Likes = table.Column<int>(type: "INTEGER", nullable: false),
+                    ParentId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,13 +41,24 @@ namespace Gossip.SQLite.Migrations
                         column: x => x.ChannelId,
                         principalTable: "Channels",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages_Messages_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChannelId",
                 table: "Messages",
                 column: "ChannelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ParentId",
+                table: "Messages",
+                column: "ParentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -70,10 +70,7 @@ namespace Gossip.Domain.Tests.Chat
                 var mediator = scope.Resolve<IMediator>();
 
                 // Act
-                var channel = new Channel("abc")
-                {
-                    Description = "def"
-                };
+                var channel = new Channel(name: "abc", description: "def");
 
                 channel.AddMessage("ghi");
                 await mediator.DispatchDomainEventsAsync(new List<Channel> { channel });

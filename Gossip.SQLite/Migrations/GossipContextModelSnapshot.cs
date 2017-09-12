@@ -37,23 +37,32 @@ namespace Gossip.SQLite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ChannelId");
+                    b.Property<int?>("ChannelId");
 
                     b.Property<string>("Content");
+
+                    b.Property<int>("Likes");
+
+                    b.Property<int?>("ParentId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ChannelId");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Gossip.Domain.Models.Chat.Message", b =>
                 {
-                    b.HasOne("Gossip.Domain.Models.Chat.Channel", "Channel")
+                    b.HasOne("Gossip.Domain.Models.Chat.Channel")
                         .WithMany("Messages")
-                        .HasForeignKey("ChannelId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ChannelId");
+
+                    b.HasOne("Gossip.Domain.Models.Chat.Message", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
                 });
 #pragma warning restore 612, 618
         }

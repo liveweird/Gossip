@@ -4,18 +4,28 @@ using Gossip.Domain.Events.Chat;
 namespace Gossip.Domain.Models.Chat
 {
     public class Channel : AggregateRoot
-    {
-        private List<Message> _messages;
-        
-        public string Name { get; set; }
-        public string Description { get; set; }
+    {       
+        public string Name { get; internal set; }
+        public string Description { get; internal set; }
+        public List<Message> Messages { get; internal set; }
 
-        public IReadOnlyCollection<Message> Messages => _messages.AsReadOnly();
+        /// <summary>
+        /// Internal contstructor is required by ORM
+        /// </summary>
+        internal Channel()
+        {            
+        }
 
-        public Channel(string name)
+        /// <summary>
+        /// Public constructor players a role of a factory method, it should expose all the parameters that are important to build a semantically proper entity
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        public Channel(string name, string description)
         {
             Name = name;
-            _messages = new List<Message>();
+            Description = description;
+            Messages = new List<Message>();
         }
 
         public bool IsEmpty()
@@ -23,9 +33,9 @@ namespace Gossip.Domain.Models.Chat
             return Messages.Count == 0;
         }
 
-        public void AddMessage(string content, int? parentMessageId = null)
+        public void AddMessage(string content, Message parentMessage = null)
         {
-            _messages.Add(new Message(content, parentMessageId));
+            Messages.Add(new Message(content, parentMessage));
 
             RaiseDomainEvent(new NewMessageCreatedEvent
             {
@@ -35,7 +45,7 @@ namespace Gossip.Domain.Models.Chat
 
         public void RemoveMessage(Message message)
         {
-            _messages.Remove(message);
+            Messages.Remove(message);
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class Entity : IEntity
     {
-        public int Id { get; }
+        public int Id { get; internal set; }
     }
 }
