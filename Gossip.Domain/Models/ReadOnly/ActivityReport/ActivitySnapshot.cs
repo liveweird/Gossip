@@ -2,6 +2,5 @@
 {
     public class ActivitySnapshot : ReadOnlyAggregateRoot
     {
-        public int Id { get; }
     }
 }
