@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gossip.Web.Controllers.Dashboard
 {
-    [Route("api/dashboard/channels/{channelId}/[controller]")]
+    [Route("api/dashboard/[controller]")]
     public class MessagesController : Controller
     {
         private readonly IMapper _mapper;
@@ -20,34 +20,18 @@ namespace Gossip.Web.Controllers.Dashboard
             _chatService = chatService;
         }
 
-        [HttpGet]
+        [HttpGet("getAllByChannel/{channelId}")]
         public async Task<IEnumerable<string>> Get(int channelId)
         {
             return (await _chatService.GetAllMessagesInChannel(channelId)).Select(c => c.Content);
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id, int channelId)
-        {
-            return "message";
-        }
-
-        [HttpPost]
+        [HttpPost("addInChannel/{channelId}")]
         public void Post([FromBody]Message message, int channelId)
         {
             message.ChannelId = channelId;
             var model = _mapper.Map<Message, Contract.DTO.Chat.Message>(message);
             _chatService.AddMessage(model);
-        }
-
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

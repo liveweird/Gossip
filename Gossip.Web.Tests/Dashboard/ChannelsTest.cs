@@ -42,15 +42,15 @@ namespace Gossip.Web.Tests.Dashboard
             // Act
             var content1 = CreateNewChannelContent("channelA", "abc");
             var response1 =
-                await _client.PostAsync("/api/dashboard/channels", content1);
+                await _client.PostAsync("/api/dashboard/channels/add", content1);
             response1.EnsureSuccessStatusCode();
 
             var content2 = CreateNewChannelContent("channelB", "abc");
             var response2 =
-                await _client.PostAsync("/api/dashboard/channels", content2);
+                await _client.PostAsync("/api/dashboard/channels/add", content2);
             response2.EnsureSuccessStatusCode();
 
-            var response3 = await _client.GetAsync("/api/dashboard/channels");
+            var response3 = await _client.GetAsync("/api/dashboard/channels/getAll");
             response3.EnsureSuccessStatusCode();
 
             var responseString = await response3.Content.ReadAsStringAsync();
@@ -66,16 +66,16 @@ namespace Gossip.Web.Tests.Dashboard
             // Act
             var content1 = CreateNewChannelContent("channelA", "abc");
             var response1 =
-                await _client.PostAsync("/api/dashboard/channels", content1);
+                await _client.PostAsync("/api/dashboard/channels/add", content1);
             response1.EnsureSuccessStatusCode();
 
             var content2 = CreateNewMessageContent(null, "def");
             var channelId = 1;
             var response2 =
-                await _client.PostAsync($"/api/dashboard/channels/{channelId}/messages", content2);
+                await _client.PostAsync($"/api/dashboard/messages/addInChannel/{channelId}", content2);
             response2.EnsureSuccessStatusCode();
 
-            var response3 = await _client.GetAsync($"/api/dashboard/channels/{channelId}/messages");
+            var response3 = await _client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}");
             response3.EnsureSuccessStatusCode();
 
             var responseString = await response3.Content.ReadAsStringAsync();

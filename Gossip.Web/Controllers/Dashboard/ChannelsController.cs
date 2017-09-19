@@ -20,33 +20,23 @@ namespace Gossip.Web.Controllers.Dashboard
             _chatService = chatService;
         }
 
-        [HttpGet]
+        [HttpGet("getAll")]
         public async Task<IEnumerable<string>> Get()
         {
             return (await _chatService.GetAllChannels()).Select(p => p.Name);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public string Get(int id)
         {
             return "channel";
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public void Post([FromBody]Channel channel)
         {
             var model = _mapper.Map<Channel, Contract.DTO.Chat.Channel>(channel);
             _chatService.AddChannel(model);
-        }
-
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
