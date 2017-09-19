@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Autofac;
 using Autofac.Features.Variance;
 using Gossip.Domain.Models.Chat;
+using Gossip.Domain.Repositories;
 using Gossip.SQLite.Repositories.Chat;
 using MediatR;
 using Xunit;
@@ -56,14 +57,17 @@ namespace Gossip.SQLite.Tests.Chat
             using (var scope = _container.BeginLifetimeScope())
             {
                 var mediator = scope.Resolve<IMediator>();
-                using (var ctx = new GossipContext(mediator))
+
+                using (var ctx = new GossipContext())
+                using (var uow = await new UnitOfWorkFactory<GossipContext>(ctx, mediator).CreateAsync())
                 {
                     var channelRepo = new ChannelRepository(ctx);
                     ctx.Channels.RemoveRange(ctx.Channels);
 
                     // Act
                     channelRepo.InsertChannel(new Channel(name: "abc", description: "def"));
-                    await channelRepo.UnitOfWork.SaveEntitiesAsync();
+                    await uow.CommitChangesAsync();
+
                     var channels = await channelRepo.GetAllChannels();
 
                     // Assert

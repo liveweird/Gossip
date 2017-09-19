@@ -2,6 +2,7 @@
 using Gossip.Application.Services.Chat;
 using Gossip.Contract.Interfaces.Chat;
 using Gossip.Domain.External.BlobStorage;
+using Gossip.Domain.Repositories;
 using Gossip.Domain.Repositories.Chat;
 using Gossip.DynamoDb.BlobStorage;
 using Gossip.SQLite;
@@ -28,11 +29,12 @@ namespace Gossip.Web
         {
             services.AddMvc();
 
+            services.AddDbContext<GossipContext>();
+
             services.AddTransient<IChatService, ChatService>();
             services.AddScoped<IChannelRepository, ChannelRepository>();
             services.AddScoped<IBlobStorage, DynamoDbBlobStorage>();
-
-            services.AddDbContext<GossipContext>();
+            services.AddScoped<IUnitOfWorkFactory, UnitOfWorkFactory<GossipContext>>();
 
             services.AddAutoMapper();
 

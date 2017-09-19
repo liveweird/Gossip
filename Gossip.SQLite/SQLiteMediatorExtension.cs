@@ -2,12 +2,13 @@
 using System.Threading.Tasks;
 using Gossip.Domain.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gossip.SQLite
 {
     public static class SQLiteMediatorExtension
     {
-        public static async Task DispatchDomainEventsAsync(this IMediator mediator, GossipContext ctx)
+        public static async Task DispatchDomainEventsAsync(this IMediator mediator, DbContext ctx)
         {
             var entities = ctx.ChangeTracker
                 .Entries<AggregateRoot>()

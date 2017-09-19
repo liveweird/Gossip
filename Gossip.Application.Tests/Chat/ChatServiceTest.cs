@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Features.Variance;
@@ -76,14 +75,16 @@ namespace Gossip.Application.Tests.Chat
         public async void AddChannel()
         {
             // Arrange
-            var unitMock = new Mock<IUnitOfWork>();
-            unitMock.Setup(unit => unit.SaveEntitiesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true);
+            var uowMock = new Mock<IUnitOfWork>();
+            var uowFactoryMock = new Mock<IUnitOfWorkFactory>();
+            uowMock.Setup(u => u.CommitChangesAsync()).Returns(Task.CompletedTask);
+            uowFactoryMock.Setup(f => f.CreateAsync()).ReturnsAsync(uowMock.Object);
+
             var channelRepoMock = new Mock<IChannelRepository>();
             channelRepoMock.Setup(repo => repo.InsertChannel(It.IsAny<Channel>())).Verifiable();
-            channelRepoMock.Setup(repo => repo.UnitOfWork).Returns(unitMock.Object);
 
             // Act
-            var chatService = new ChatService(_mapper, channelRepoMock.Object);
+            var chatService = new ChatService(_mapper, channelRepoMock.Object, uowFactoryMock.Object);
             await chatService.AddChannel(new Contract.DTO.Chat.Channel
             {
                 Name = "abc",
@@ -92,6 +93,7 @@ namespace Gossip.Application.Tests.Chat
 
             // Assert
             channelRepoMock.Verify(repo => repo.InsertChannel(It.IsAny<Channel>()));
+            uowMock.Verify(uow => uow.CommitChangesAsync());
         }
 
         [Fact]

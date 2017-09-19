@@ -7,9 +7,4 @@ namespace Gossip.Domain.Repositories
     {
         Task CommitChangesAsync();
     }
-
-    public interface IUnitOfWorkFactory
-    {
-        Task<IUnitOfWork> CreateAsync();
-    }
 }

@@ -19,12 +19,16 @@ namespace Gossip.SQLite
         public DbSet<Channel> Channels { get; set; }
         public DbSet<Message> Messages { get; set; }
 
+        public GossipContext()
+        {
+        }
+
         internal GossipContext(DbContextOptions options) : base(options)
         {
             // two important comments:
             // 1. this contstructor is left 'internal' for a reason - it should be use of for the purpose of creating migrations
         }
-
+    
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=gossip.db");
