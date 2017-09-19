@@ -13,8 +13,6 @@ namespace Gossip.SQLite.Repositories
             Context = context;
         }
 
-        public IUnitOfWork UnitOfWork => Context;
-
         public abstract Task<T> GetAsync(int id);
     }
 }
