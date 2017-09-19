@@ -9,6 +9,7 @@ using Channel = Gossip.Contract.DTO.Chat.Channel;
 using DomainChannel = Gossip.Domain.Models.Chat.Channel;
 using Message = Gossip.Contract.DTO.Chat.Message;
 using DomainMessage = Gossip.Domain.Models.Chat.Message;
+using Gossip.Domain.Repositories;
 
 namespace Gossip.Application.Services.Chat
 {
@@ -16,18 +17,23 @@ namespace Gossip.Application.Services.Chat
     {
         private readonly IMapper _mapper;
         private readonly IChannelRepository _channelRepository;
+        private readonly IUnitOfWorkFactory _uowFactory;
 
-        public ChatService(IMapper mapper, IChannelRepository channelRepository)
+        public ChatService(IMapper mapper, IChannelRepository channelRepository, IUnitOfWorkFactory uowFactory)
         {
             _mapper = mapper;
             _channelRepository = channelRepository;
+            _uowFactory = uowFactory;
         }
 
-        public async Task<bool> AddChannel(Channel channel)
+        public async Task AddChannel(Channel channel)
         {
-            var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
-            _channelRepository.InsertChannel(toInsert);
-            return await _channelRepository.UnitOfWork.SaveEntitiesAsync();
+            using (var uow = await _uowFactory.CreateAsync())
+            {
+                var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
+                _channelRepository.InsertChannel(toInsert);
+                await uow.CommitChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Channel>> GetAllChannels()
@@ -42,12 +48,15 @@ namespace Gossip.Application.Services.Chat
             return _mapper.Map<IEnumerable<DomainMessage>, IEnumerable<Message>>(channel.Messages.ToList());
         }
 
-        public async Task<bool> AddMessage(Message message)
+        public async Task AddMessage(Message message)
         {
-            var channel = await _channelRepository.GetAsync(message.ChannelId);
-            channel.AddMessage(message.Content, null);
-            _channelRepository.UpdateChannel(channel);
-            return await _channelRepository.UnitOfWork.SaveEntitiesAsync();
+            using (var uow = await _uowFactory.CreateAsync())
+            {
+                var channel = await _channelRepository.GetAsync(message.ChannelId);
+                channel.AddMessage(message.Content, null);
+                _channelRepository.UpdateChannel(channel);
+                await uow.CommitChangesAsync();
+            }
         }
     }
 }
