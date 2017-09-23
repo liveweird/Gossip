@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,6 +59,22 @@ namespace Gossip.Web.Tests.Dashboard
             // Assert
             Assert.Equal("[\"channelA\",\"channelB\"]",
                 responseString);
+        }
+
+        [Fact]
+        public async Task EmptyChannelName()
+        {
+            // Act
+            var content1 = CreateNewChannelContent("", "abc");
+            var response1 =
+                await _client.PostAsync("/api/dashboard/channels/add", content1);
+
+            // Assert
+            Assert.Equal(response1.StatusCode, HttpStatusCode.BadRequest);
+            var response1String = await response1.Content.ReadAsStringAsync();
+
+            Assert.Equal("{\"Name\":[\"\'Name\' should not be empty.\"]}",
+                response1String);
         }
 
         [Fact]

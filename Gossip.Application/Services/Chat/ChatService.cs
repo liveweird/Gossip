@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Gossip.Contract;
 using Gossip.Contract.Interfaces.Chat;
 using Gossip.Domain.Repositories.Chat;
 using Channel = Gossip.Contract.DTO.Chat.Channel;
@@ -26,13 +27,21 @@ namespace Gossip.Application.Services.Chat
             _uowFactory = uowFactory;
         }
 
-        public async Task AddChannel(Channel channel)
+        public async Task<ApiResult> AddChannel(Channel channel)
         {
             using (var uow = await _uowFactory.CreateAsync())
             {
-                var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
-                _channelRepository.InsertChannel(toInsert);
-                await uow.CommitChangesAsync();
+                try
+                {
+                    var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
+                    _channelRepository.InsertChannel(toInsert);
+                    await uow.CommitChangesAsync();
+                    return ApiResult.Success();
+                }
+                catch (Exception ex)
+                {
+                    return ApiResult.Fail(ex);
+                }
             }
         }
 

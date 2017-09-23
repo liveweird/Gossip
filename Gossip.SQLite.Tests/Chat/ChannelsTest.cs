@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Autofac;
 using Autofac.Features.Variance;
 using Gossip.Domain.Models.Chat;
-using Gossip.Domain.Repositories;
 using Gossip.SQLite.Repositories.Chat;
 using MediatR;
 using Xunit;

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.AspNetCore;
 using Gossip.Application.Services.Chat;
 using Gossip.Contract.Interfaces.Chat;
 using Gossip.Domain.External.BlobStorage;
@@ -27,7 +28,12 @@ namespace Gossip.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(
+                    config => {
+                        config.Filters.Add(typeof(CustomExceptionFilter));
+                    }
+                )
+                .AddFluentValidation(val => val.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
 
             services.AddDbContext<GossipContext>();
 

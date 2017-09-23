@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Gossip.Contract.Interfaces.Chat;
@@ -21,22 +20,30 @@ namespace Gossip.Web.Controllers.Dashboard
         }
 
         [HttpGet("getAll")]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<IActionResult> Get()
         {
-            return (await _chatService.GetAllChannels()).Select(p => p.Name);
+            var model = await _chatService.GetAllChannels();
+            return Ok(model.Select(p => p.Name));
         }
 
         [HttpGet("get/{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "channel";
+            return Ok("channel");
         }
 
         [HttpPost("add")]
-        public void Post([FromBody]Channel channel)
+        public IActionResult Post([FromBody]Channel channel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var model = _mapper.Map<Channel, Contract.DTO.Chat.Channel>(channel);
-            _chatService.AddChannel(model);
+            var result = _chatService.AddChannel(model);
+
+            return NoContent();
         }
     }
 }
