@@ -11,6 +11,7 @@ using DomainChannel = Gossip.Domain.Models.Chat.Channel;
 using Message = Gossip.Contract.DTO.Chat.Message;
 using DomainMessage = Gossip.Domain.Models.Chat.Message;
 using Gossip.Domain.Repositories;
+using LanguageExt;
 
 namespace Gossip.Application.Services.Chat
 {
@@ -27,22 +28,18 @@ namespace Gossip.Application.Services.Chat
             _uowFactory = uowFactory;
         }
 
-        public async Task<ApiResult> AddChannel(Channel channel)
+        public TryAsync<Unit> AddChannel(Channel channel)
         {
-            using (var uow = await _uowFactory.CreateAsync())
+            return async () =>
             {
-                try
+                using (var uow = await _uowFactory.CreateAsync())
                 {
                     var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
                     _channelRepository.InsertChannel(toInsert);
                     await uow.CommitChangesAsync();
-                    return ApiResult.Success();
+                    return Unit.Default;
                 }
-                catch (Exception ex)
-                {
-                    return ApiResult.Fail(ex);
-                }
-            }
+            };            
         }
 
         public async Task<IEnumerable<Channel>> GetAllChannels()

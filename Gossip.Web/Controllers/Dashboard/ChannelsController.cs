@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Gossip.Contract.Interfaces.Chat;
 using Gossip.Web.ViewModels.Dashboard;
+using LanguageExt;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gossip.Web.Controllers.Dashboard
@@ -33,7 +34,7 @@ namespace Gossip.Web.Controllers.Dashboard
         }
 
         [HttpPost("add")]
-        public IActionResult Post([FromBody]Channel channel)
+        public async Task<IActionResult> Post([FromBody]Channel channel)
         {
             if (!ModelState.IsValid)
             {
@@ -41,9 +42,14 @@ namespace Gossip.Web.Controllers.Dashboard
             }
 
             var model = _mapper.Map<Channel, Contract.DTO.Chat.Channel>(channel);
-            var result = _chatService.AddChannel(model);
+            var svcResult = _chatService.AddChannel(model);
 
-            return NoContent();
+            var result = svcResult.Match<Unit, IActionResult>(
+                Succ: unit => NoContent(),
+                Fail: ex => StatusCode(500, ex)
+            );
+
+            return await result;
         }
     }
 }

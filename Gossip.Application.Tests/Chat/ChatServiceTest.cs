@@ -89,7 +89,7 @@ namespace Gossip.Application.Tests.Chat
             {
                 Name = "abc",
                 Description = "def"
-            });
+            }).Invoke();
 
             // Assert
             channelRepoMock.Verify(repo => repo.InsertChannel(It.IsAny<Channel>()));
