@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Gossip.Contract.Interfaces.Chat;
 using Gossip.Web.ViewModels.Dashboard;
@@ -24,9 +22,7 @@ namespace Gossip.Web.Controllers.Dashboard
         [HttpGet("getAll")]
         public async Task<IActionResult> Get()
         {
-            TryAsync<Lst<Contract.DTO.Chat.Channel>> svcResult = async () => {
-                return await _chatService.GetAllChannels();
-            };
+            TryAsync<Lst<Contract.DTO.Chat.Channel>> svcResult = async () => await _chatService.GetAllChannels();
 
             var result = svcResult.Match<Lst<Contract.DTO.Chat.Channel>, IActionResult>(
                 Succ: model => Ok(model.Select(p => p.Name)),
@@ -43,17 +39,11 @@ namespace Gossip.Web.Controllers.Dashboard
         }
 
         [HttpPost("add")]
+        [ValidationFilter]
         public async Task<IActionResult> Post([FromBody]Channel channel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var model = _mapper.Map<Channel, Contract.DTO.Chat.Channel>(channel);
-            TryAsync<Unit> svcResult = async () => {
-                return await _chatService.AddChannel(model);
-            };
+            TryAsync<Unit> svcResult = async () => await _chatService.AddChannel(model);
 
             var result = svcResult.Match<Unit, IActionResult>(
                 Succ: unit => NoContent(),
