@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Gossip.Domain\Gossip.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LanguageExt.Core" Version="2.1.21" />
+  </ItemGroup>
+
 </Project>

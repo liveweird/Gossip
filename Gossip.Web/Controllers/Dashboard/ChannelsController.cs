@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Gossip.Contract.Interfaces.Chat;
@@ -24,7 +25,17 @@ namespace Gossip.Web.Controllers.Dashboard
         public async Task<IActionResult> Get()
         {
             var model = await _chatService.GetAllChannels();
-            return Ok(model.Select(p => p.Name));
+
+            TryAsync<Lst<Contract.DTO.Chat.Channel>> svcResult = async () => {
+                return await _chatService.GetAllChannels();
+            };
+
+            var result = svcResult.Match<Lst<Contract.DTO.Chat.Channel>, IActionResult>(
+                Succ: unit => Ok(model.Select(p => p.Name)),
+                Fail: ex => StatusCode(500, ex)
+            );
+
+            return await result;
         }
 
         [HttpGet("get/{id}")]
@@ -42,7 +53,9 @@ namespace Gossip.Web.Controllers.Dashboard
             }
 
             var model = _mapper.Map<Channel, Contract.DTO.Chat.Channel>(channel);
-            var svcResult = _chatService.AddChannel(model);
+            TryAsync<Unit> svcResult = async () => {
+                return await _chatService.AddChannel(model);
+            };
 
             var result = svcResult.Match<Unit, IActionResult>(
                 Succ: unit => NoContent(),

@@ -8,9 +8,9 @@ namespace Gossip.Contract.Interfaces.Chat
 {
     public interface IChatService
     {
-        TryAsync<Unit> AddChannel(Channel channel);
+        Task<Unit> AddChannel(Channel channel);
         Task AddMessage(Message message);
-        Task<IEnumerable<Channel>> GetAllChannels();
+        Task<Lst<Channel>> GetAllChannels();
         Task<IEnumerable<Message>> GetAllMessagesInChannel(int channelId);
     }
 }

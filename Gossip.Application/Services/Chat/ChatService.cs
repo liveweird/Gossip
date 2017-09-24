@@ -28,24 +28,20 @@ namespace Gossip.Application.Services.Chat
             _uowFactory = uowFactory;
         }
 
-        public TryAsync<Unit> AddChannel(Channel channel)
+        public async Task<Unit> AddChannel(Channel channel)
         {
-            return async () =>
+            using (var uow = await _uowFactory.CreateAsync())
             {
-                using (var uow = await _uowFactory.CreateAsync())
-                {
-                    var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
-                    _channelRepository.InsertChannel(toInsert);
-                    await uow.CommitChangesAsync();
-                    return Unit.Default;
-                }
-            };            
+                var toInsert = _mapper.Map<Channel, DomainChannel>(channel);
+                _channelRepository.InsertChannel(toInsert);
+                await uow.CommitChangesAsync();
+                return Unit.Default;
+            }
         }
-
-        public async Task<IEnumerable<Channel>> GetAllChannels()
+        public async Task<Lst<Channel>> GetAllChannels()
         {
             var channels = await _channelRepository.GetAllChannels();
-            return _mapper.Map<IEnumerable<DomainChannel>, IEnumerable<Channel>>(channels);
+            return new Lst<Channel>(_mapper.Map<IEnumerable<DomainChannel>, IEnumerable<Channel>>(channels));
         }
 
         public async Task<IEnumerable<Message>> GetAllMessagesInChannel(int channelId)
