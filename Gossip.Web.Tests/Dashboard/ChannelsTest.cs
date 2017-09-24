@@ -1,119 +1,196 @@
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
+using FluentAssertions;
+using Gossip.Web.Controllers.Dashboard;
 using Gossip.Web.ViewModels.Dashboard;
+using Machine.Specifications;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
-using Xunit;
 
 namespace Gossip.Web.Tests.Dashboard
 {
-    public class ChannelsTest
+    internal class ApiTestHelper
     {
-        private readonly TestServer _server;
-        private readonly HttpClient _client;
-
-        public ChannelsTest()
+        internal static (TestServer, HttpClient) BuildContext()
         {
-            // Arrange
-            _server = new TestServer(new WebHostBuilder()
+            var server = new TestServer(new WebHostBuilder()
                 .UseStartup<Startup>());
-            _client = _server.CreateClient();
+            var client = server.CreateClient();
+            return (server, client);
         }
+    }
 
-        private StringContent CreateNewChannelContent(string name, string description)
+    internal class ChannelTestHelper
+    {
+        internal static StringContent CreateNewChannelContent(string name, string description)
         {
             return new StringContent(JsonConvert.SerializeObject(new Channel { Name = name, Description = description }),
                 Encoding.UTF8,
                 "application/json");
         }
 
-        private StringContent CreateNewMessageContent(int? parentId, string content)
+        internal static StringContent CreateNewMessageContent(int? parentId, string content)
         {
             return new StringContent(JsonConvert.SerializeObject(new Message { ParentId = parentId, Content = content }),
                 Encoding.UTF8,
                 "application/json");
         }
+    }
 
-        [Fact]
-        public async Task AddTwoChannels()
+    [Tags("Scenario")]
+    [Subject(typeof(ChannelsController), "Add Two Channels")]
+    public class When_adding_two_channels
+    {
+        static TestServer Server;
+        static HttpClient Client;
+        static HttpResponseMessage Response3;
+
+        Establish context = () =>
         {
-            // Act
-            var content1 = CreateNewChannelContent("channelA", "abc");
-            var response1 =
-                await _client.PostAsync("/api/dashboard/channels/add", content1);
-            response1.EnsureSuccessStatusCode();
+            (Server, Client) = ApiTestHelper.BuildContext();
+        };
 
-            var content2 = CreateNewChannelContent("channelB", "abc");
-            var response2 =
-                await _client.PostAsync("/api/dashboard/channels/add", content2);
-            response2.EnsureSuccessStatusCode();
-
-            var response3 = await _client.GetAsync("/api/dashboard/channels/getAll");
-            response3.EnsureSuccessStatusCode();
-
-            var responseString = await response3.Content.ReadAsStringAsync();
-
-            // Assert
-            Assert.Equal("[\"channelA\",\"channelB\"]",
-                responseString);
-        }
-
-        [Fact]
-        public async Task EmptyChannelName()
+        Because of = () =>
         {
-            // Act
-            var content1 = CreateNewChannelContent("", "abc");
-            var response1 =
-                await _client.PostAsync("/api/dashboard/channels/add", content1);
+            Action prepare = async () => {
+                var content1 = ChannelTestHelper.CreateNewChannelContent("channelA", "abc");
+                var response1 =
+                    await Client.PostAsync("/api/dashboard/channels/add", content1);
+                response1.EnsureSuccessStatusCode();
 
-            // Assert
-            Assert.Equal(response1.StatusCode, HttpStatusCode.BadRequest);
-            var response1String = await response1.Content.ReadAsStringAsync();
+                var content2 = ChannelTestHelper.CreateNewChannelContent("channelB", "abc");
+                var response2 =
+                    await Client.PostAsync("/api/dashboard/channels/add", content2);
+                response2.EnsureSuccessStatusCode();
+            };
 
-            Assert.Equal("{\"Name\":[\"\'Name\' should not be empty.\"]}",
-                response1String);
-        }
+            prepare.AsTask().Await();
 
-        [Fact]
-        public async Task AddMessageToChannel()
+            Response3 = Client.GetAsync("/api/dashboard/channels/getAll").Await();
+        };
+
+        It should_return_a_successful_code = () =>
         {
-            // Act
-            var content1 = CreateNewChannelContent("channelA", "abc");
-            var response1 =
-                await _client.PostAsync("/api/dashboard/channels/add", content1);
-            response1.EnsureSuccessStatusCode();
+            Response3.StatusCode.Should().Be(HttpStatusCode.OK);
+        };
 
-            var content2 = CreateNewMessageContent(null, "def");
+        It should_return_both_added_channels = async () =>
+        {
+            var responseString = await Response3.Content.ReadAsStringAsync();
+            responseString.Should().Be("[\"channelA\",\"channelB\"]");
+        };
+    }
+
+    [Tags("Scenario")]
+    [Subject(typeof(ChannelsController), "Add channels with empty name")]
+    public class When_adding_a_channel_with_empty_name
+    {
+        static TestServer Server;
+        static HttpClient Client;
+        static HttpResponseMessage Response1;
+
+        Establish context = () =>
+        {
+            (Server, Client) = ApiTestHelper.BuildContext();
+        };
+
+        Because of = () =>
+        {
+            var content1 = ChannelTestHelper.CreateNewChannelContent("", "abc");
+            Response1 =
+                Client.PostAsync("/api/dashboard/channels/add", content1).Await();
+        };
+
+        It should_raise_an_error = () =>
+        {
+            Response1.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        };
+
+        It should_provide_an_explanation = async () =>
+        {
+            var response1String = await Response1.Content.ReadAsStringAsync();
+            response1String.Should().Be("{\"Name\":[\"\'Name\' should not be empty.\"]}");
+        };
+    }
+
+    [Tags("Scenario")]
+    [Subject(typeof(ChannelsController), "Add message to channel")]
+    public class When_adding_a_message_to_channel
+    {
+        static TestServer Server;
+        static HttpClient Client;
+        static HttpResponseMessage Response3;
+
+        Establish context = () =>
+        {
+            (Server, Client) = ApiTestHelper.BuildContext();
+        };
+
+        Because of = () =>
+        {
             var channelId = 1;
-            var response2 =
-                await _client.PostAsync($"/api/dashboard/messages/addInChannel/{channelId}", content2);
-            response2.EnsureSuccessStatusCode();
 
-            var response3 = await _client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}");
-            response3.EnsureSuccessStatusCode();
+            Action prepare = async () =>
+            {
+                var content1 = ChannelTestHelper.CreateNewChannelContent("channelA", "abc");
+                var response1 =
+                    await Client.PostAsync("/api/dashboard/channels/add", content1);
+                response1.EnsureSuccessStatusCode();
 
-            var responseString = await response3.Content.ReadAsStringAsync();
+                var content2 = ChannelTestHelper.CreateNewMessageContent(null, "def");
+                var response2 =
+                    await Client.PostAsync($"/api/dashboard/messages/addInChannel/{channelId}", content2);
+                response2.EnsureSuccessStatusCode();
+            };
 
-            // Assert
-            Assert.Equal("[\"def\"]",
-                responseString);
-        }
+            prepare.AsTask().Await();
 
-        [Fact]
-        public async Task NoMessageInNonExistentChannel()
+            Response3 = Client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}").Await();
+        };
+
+        It should_return_a_successful_code = () =>
         {
-            // Act
-            var channelId = 44;
-            var response1 = await _client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}");
-            
-            // Assert
-            Assert.Equal(response1.StatusCode, HttpStatusCode.InternalServerError);
-            var response1String = await response1.Content.ReadAsStringAsync();
+            Response3.StatusCode.Should().Be(HttpStatusCode.OK);
+        };
 
-            Assert.StartsWith("{\"ClassName\":\"System.ArgumentException\"", response1String);
-        }        
+        It should_return_the_message_created = () =>
+        {
+            var responseString = Response3.Content.ReadAsStringAsync();
+            responseString.Should().Be("[\"def\"]");
+        };
+    }
+
+    [Tags("Scenario")]
+    [Subject(typeof(ChannelsController), "No message in non-existent channel")]
+    public class When_getting_messages_out_of_nonexistent_channel
+    {
+        static TestServer Server;
+        static HttpClient Client;
+        static HttpResponseMessage Response1;
+
+        Establish context = () =>
+        {
+            (Server, Client) = ApiTestHelper.BuildContext();
+        };
+
+        Because of = () =>
+        {
+            var channelId = 44;
+            Response1 = Client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}").Await();
+        };
+
+        It should_raise_an_error = () =>
+        {
+            Response1.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        };
+
+        It should_provide_an_explanation = async () =>
+        {
+            var response1String = await Response1.Content.ReadAsStringAsync();
+            response1String.Should().StartWith("{\"ClassName\":\"System.ArgumentException\"");
+        };
     }
 }
