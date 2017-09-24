@@ -24,14 +24,12 @@ namespace Gossip.Web.Controllers.Dashboard
         [HttpGet("getAll")]
         public async Task<IActionResult> Get()
         {
-            var model = await _chatService.GetAllChannels();
-
             TryAsync<Lst<Contract.DTO.Chat.Channel>> svcResult = async () => {
                 return await _chatService.GetAllChannels();
             };
 
             var result = svcResult.Match<Lst<Contract.DTO.Chat.Channel>, IActionResult>(
-                Succ: unit => Ok(model.Select(p => p.Name)),
+                Succ: model => Ok(model.Select(p => p.Name)),
                 Fail: ex => StatusCode(500, ex)
             );
 

@@ -5,6 +5,7 @@ using AutoMapper;
 using Gossip.Contract.Interfaces.Chat;
 using Gossip.Web.ViewModels.Dashboard;
 using Microsoft.AspNetCore.Mvc;
+using LanguageExt;
 
 namespace Gossip.Web.Controllers.Dashboard
 {
@@ -21,9 +22,18 @@ namespace Gossip.Web.Controllers.Dashboard
         }
 
         [HttpGet("getAllByChannel/{channelId}")]
-        public async Task<IEnumerable<string>> Get(int channelId)
+        public async Task<IActionResult> Get(int channelId)
         {
-            return (await _chatService.GetAllMessagesInChannel(channelId)).Select(c => c.Content);
+            TryAsync<Lst<Contract.DTO.Chat.Message>> svcResult = async () => {
+                return await _chatService.GetAllMessagesInChannel(channelId);
+            };
+
+            var result = svcResult.Match<Lst<Contract.DTO.Chat.Message>, IActionResult>(
+                Succ: model => Ok(model.Select(p => p.Content)),
+                Fail: ex => StatusCode(500, ex)
+            );
+
+            return await result;
         }
 
         [HttpPost("addInChannel/{channelId}")]

@@ -101,5 +101,19 @@ namespace Gossip.Web.Tests.Dashboard
             Assert.Equal("[\"def\"]",
                 responseString);
         }
+
+        [Fact]
+        public async Task NoMessageInNonExistentChannel()
+        {
+            // Act
+            var channelId = 44;
+            var response1 = await _client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}");
+            
+            // Assert
+            Assert.Equal(response1.StatusCode, HttpStatusCode.InternalServerError);
+            var response1String = await response1.Content.ReadAsStringAsync();
+
+            Assert.StartsWith("{\"ClassName\":\"System.ArgumentException\"", response1String);
+        }        
     }
 }

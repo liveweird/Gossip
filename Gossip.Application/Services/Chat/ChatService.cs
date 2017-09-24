@@ -44,13 +44,13 @@ namespace Gossip.Application.Services.Chat
             return new Lst<Channel>(_mapper.Map<IEnumerable<DomainChannel>, IEnumerable<Channel>>(channels));
         }
 
-        public async Task<IEnumerable<Message>> GetAllMessagesInChannel(int channelId)
+        public async Task<Lst<Message>> GetAllMessagesInChannel(int channelId)
         {
-            var channel = await _channelRepository.GetAsync(channelId) ?? throw new ArgumentException("Provide channel identifier is not proper!");
-            return _mapper.Map<IEnumerable<DomainMessage>, IEnumerable<Message>>(channel.Messages.ToList());
+            var channel = await _channelRepository.GetAsync(channelId) ?? throw new ArgumentException("Provided channel identifier is not proper!");
+            return new Lst<Message>(_mapper.Map<IEnumerable<DomainMessage>, IEnumerable<Message>>(channel.Messages.ToList()));
         }
 
-        public async Task AddMessage(Message message)
+        public async Task<Unit> AddMessage(Message message)
         {
             using (var uow = await _uowFactory.CreateAsync())
             {
@@ -58,6 +58,7 @@ namespace Gossip.Application.Services.Chat
                 channel.AddMessage(message.Content, null);
                 _channelRepository.UpdateChannel(channel);
                 await uow.CommitChangesAsync();
+                return Unit.Default;
             }
         }
     }
