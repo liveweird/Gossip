@@ -1,14 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
-using Gossip.Application.Services.Chat;
-using Gossip.Contract.Interfaces.Chat;
-using Gossip.Domain.External.BlobStorage;
-using Gossip.Domain.Repositories;
-using Gossip.Domain.Repositories.Chat;
-using Gossip.DynamoDb.BlobStorage;
-using Gossip.SQLite;
-using Gossip.SQLite.Repositories.Chat;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +19,7 @@ namespace Gossip.Web
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(
                     config => {
@@ -35,16 +28,11 @@ namespace Gossip.Web
                 )
                 .AddFluentValidation(val => val.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
 
-            services.AddDbContext<GossipContext>();
-
-            services.AddTransient<IChatService, ChatService>();
-            services.AddScoped<IChannelRepository, ChannelRepository>();
-            services.AddScoped<IBlobStorage, DynamoDbBlobStorage>();
-            services.AddScoped<IUnitOfWorkFactory, UnitOfWorkFactory<GossipContext>>();
-
-            services.AddAutoMapper();
-
-            services.AddMediatR();
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule<CompositionRoot>();
+            containerBuilder.Populate(services);
+            var container = containerBuilder.Build();
+            return new AutofacServiceProvider(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

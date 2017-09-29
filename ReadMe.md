@@ -24,6 +24,7 @@ dotnet test
 
 ## TODO
 
+1. Dependency resolver / binder
 1. Error handling (exceptions)
 1. Validation
 1. Logging
@@ -32,4 +33,3 @@ dotnet test
 1. XSRF
 1. XSS (Encoding)
 1. Enums.NET
-1. lang-ext
