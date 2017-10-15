@@ -37,11 +37,19 @@ namespace Gossip.Web.Controllers.Dashboard
         }
 
         [HttpPost("addInChannel/{channelId}")]
-        public void Post([FromBody]Message message, int channelId)
+        public async Task<IActionResult> Post([FromBody]Message message, int channelId)
         {
             message.ChannelId = channelId;
             var model = _mapper.Map<Message, Contract.DTO.Chat.Message>(message);
-            _chatService.AddMessage(model);
+
+            TryAsync<Unit> svcResult = async () => await _chatService.AddMessage(model);
+
+            var result = svcResult.Match<Unit, IActionResult>(
+                Succ: unit => NoContent(),
+                Fail: ex => StatusCode(500, ex)
+            );
+
+            return await result;
         }
     }
 }

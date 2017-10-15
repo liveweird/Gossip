@@ -41,6 +41,10 @@ namespace Gossip.Web
 
         public static ContainerBuilder SetUpAutoMapper(this ContainerBuilder builder)
         {
+            builder.RegisterAssemblyTypes(typeof(ContainerBuilderExtensions).Assembly)
+                .AssignableTo<Profile>()
+                .As<Profile>();
+
             builder.Register(context =>
                 {
                     var profiles = context.Resolve<IEnumerable<Profile>>();

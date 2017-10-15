@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Gossip.Web.Controllers.Dashboard;
 using Gossip.Web.ViewModels.Dashboard;
@@ -129,26 +130,21 @@ namespace Gossip.Web.Tests.Dashboard
             (Server, Client) = ApiTestHelper.BuildContext();
         };
 
-        Because of = () =>
+        private Because of = () =>
         {
             var channelId = 1;
 
-            Action prepare = async () =>
-            {
-                var content1 = ChannelTestHelper.CreateNewChannelContent("channelA", "abc");
-                var response1 =
-                    await Client.PostAsync("/api/dashboard/channels/add", content1);
-                response1.EnsureSuccessStatusCode();
+            var content1 = ChannelTestHelper.CreateNewChannelContent("channelA", "abc");
+            var response1 =
+                Client.PostAsync("/api/dashboard/channels/add", content1).Result;
+            response1.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-                var content2 = ChannelTestHelper.CreateNewMessageContent(null, "def");
-                var response2 =
-                    await Client.PostAsync($"/api/dashboard/messages/addInChannel/{channelId}", content2);
-                response2.EnsureSuccessStatusCode();
-            };
+            var content2 = ChannelTestHelper.CreateNewMessageContent(null, "def");
+            var response2 =
+                Client.PostAsync($"/api/dashboard/messages/addInChannel/{channelId}", content2).Result;
+            response2.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-            prepare.AsTask().Await();
-
-            Response3 = Client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}").Await();
+            Response3 = Client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}").Result;
         };
 
         It should_return_a_successful_code = () =>
