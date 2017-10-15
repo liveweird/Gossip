@@ -24,6 +24,7 @@ dotnet test
 
 ## TODO
 
+1. Re-write shit to Dapper, so idea of ORM-agnisticism is proven
 1. Dependency resolver / binder
 1. Error handling (exceptions)
 1. Validation
@@ -32,4 +33,4 @@ dotnet test
 1. Authentication
 1. XSRF
 1. XSS (Encoding)
-1. Enums.NET
+1. Dockerize deployment (multi-instance)
