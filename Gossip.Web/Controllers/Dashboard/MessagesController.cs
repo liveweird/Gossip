@@ -24,12 +24,14 @@ namespace Gossip.Web.Controllers.Dashboard
         [HttpGet("getAllByChannel/{channelId}")]
         public async Task<IActionResult> Get(int channelId)
         {
-            TryAsync<Lst<Contract.DTO.Chat.Message>> svcResult = async () => {
-                return await _chatService.GetAllMessagesInChannel(channelId);
-            };
+            TryAsync<Lst<Contract.DTO.Chat.Message>> svcResult = async () => await _chatService.GetAllMessagesInChannel(channelId);
 
             var result = svcResult.Match<Lst<Contract.DTO.Chat.Message>, IActionResult>(
-                Succ: model => Ok(model.Select(p => p.Content)),
+                Succ: model =>
+                {
+                    var messages = model.Select(p => p.Content).ToList();
+                    return Ok(messages);
+                },
                 Fail: ex => StatusCode(500, ex)
             );
 

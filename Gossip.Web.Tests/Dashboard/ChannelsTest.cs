@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Gossip.Web.Controllers.Dashboard;
 using Gossip.Web.ViewModels.Dashboard;
@@ -56,19 +55,15 @@ namespace Gossip.Web.Tests.Dashboard
 
         Because of = () =>
         {
-            Action prepare = async () => {
-                var content1 = ChannelTestHelper.CreateNewChannelContent("channelA", "abc");
-                var response1 =
-                    await Client.PostAsync("/api/dashboard/channels/add", content1);
-                response1.EnsureSuccessStatusCode();
+            var content1 = ChannelTestHelper.CreateNewChannelContent("channelA", "abc");
+            var response1 =
+                Client.PostAsync("/api/dashboard/channels/add", content1).Result;
+            response1.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-                var content2 = ChannelTestHelper.CreateNewChannelContent("channelB", "abc");
-                var response2 =
-                    await Client.PostAsync("/api/dashboard/channels/add", content2);
-                response2.EnsureSuccessStatusCode();
-            };
-
-            prepare.AsTask().Await();
+            var content2 = ChannelTestHelper.CreateNewChannelContent("channelB", "abc");
+            var response2 =
+                Client.PostAsync("/api/dashboard/channels/add", content2).Result;
+            response2.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
             Response3 = Client.GetAsync("/api/dashboard/channels/getAll").Await();
         };
@@ -144,7 +139,7 @@ namespace Gossip.Web.Tests.Dashboard
                 Client.PostAsync($"/api/dashboard/messages/addInChannel/{channelId}", content2).Result;
             response2.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-            Response3 = Client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}").Result;
+            Response3 = Client.GetAsync($"/api/dashboard/messages/getAllByChannel/{channelId}").Await();
         };
 
         It should_return_a_successful_code = () =>

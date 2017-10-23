@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Gossip.Contract.Interfaces.Chat;
 using Gossip.Web.ViewModels.Dashboard;
@@ -25,7 +26,7 @@ namespace Gossip.Web.Controllers.Dashboard
             TryAsync<Lst<Contract.DTO.Chat.Channel>> svcResult = async () => await _chatService.GetAllChannels();
 
             var result = svcResult.Match<Lst<Contract.DTO.Chat.Channel>, IActionResult>(
-                Succ: model => Ok(model.Select(p => p.Name)),
+                Succ: model => Ok(model.Select(p => p.Name).ToList()),
                 Fail: ex => StatusCode(500, ex)
             );
 
