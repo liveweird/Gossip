@@ -147,9 +147,9 @@ namespace Gossip.Web.Tests.Dashboard
             Response3.StatusCode.Should().Be(HttpStatusCode.OK);
         };
 
-        It should_return_the_message_created = () =>
+        It should_return_the_message_created = async () =>
         {
-            var responseString = Response3.Content.ReadAsStringAsync();
+            var responseString = await Response3.Content.ReadAsStringAsync();
             responseString.Should().Be("[\"def\"]");
         };
     }

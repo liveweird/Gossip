@@ -34,3 +34,5 @@ dotnet test
 1. XSRF
 1. XSS (Encoding)
 1. Dockerize deployment (multi-instance)
+1. DB snapshots for integration tests
+1. input params + output envelope for Web API
