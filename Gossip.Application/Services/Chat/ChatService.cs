@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Gossip.Contract;
 using Gossip.Contract.Interfaces.Chat;
 using Gossip.Domain.Repositories.Chat;
 using Channel = Gossip.Contract.DTO.Chat.Channel;
@@ -48,6 +47,36 @@ namespace Gossip.Application.Services.Chat
         {
             var channel = await _channelRepository.GetAsync(channelId) ?? throw new ArgumentException("Provided channel identifier is not proper!");
             return new Lst<Message>(_mapper.Map<IEnumerable<DomainMessage>, IEnumerable<Message>>(channel.Messages.ToList()));
+        }
+
+        public async Task<Unit> MakeUserJoin(int channelId, int userId)
+        {
+            using (var uow = await _uowFactory.CreateAsync())
+            {
+                var channel = await _channelRepository.GetAsync(channelId);
+                channel.MakeUserJoin(userId);
+                _channelRepository.UpdateChannel(channel);
+                await uow.CommitChangesAsync();
+                return Unit.Default;
+            }
+        }
+
+        public async Task<Unit> MakeUserLeave(int channelId, int userId)
+        {
+            using (var uow = await _uowFactory.CreateAsync())
+            {
+                var channel = await _channelRepository.GetAsync(channelId);
+                channel.MakeUserLeave(userId);
+                _channelRepository.UpdateChannel(channel);
+                await uow.CommitChangesAsync();
+                return Unit.Default;
+            }
+        }
+
+        public async Task<Lst<int>> GetIdsOfUsersInChannel(int channelId)
+        {
+            var channel = await _channelRepository.GetAsync(channelId) ?? throw new ArgumentException("Provided channel identifier is not proper!");
+            return new Lst<int>(_mapper.Map<IEnumerable<int>, IEnumerable<int>>(channel.Users.Select(u => u.UserId).ToList()));
         }
 
         public async Task<Unit> AddMessage(Message message)

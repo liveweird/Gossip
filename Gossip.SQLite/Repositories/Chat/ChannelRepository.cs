@@ -20,6 +20,8 @@ namespace Gossip.SQLite.Repositories.Chat
             {
                 await Context.Entry(channel)
                     .Collection(i => i.Messages).LoadAsync();
+                await Context.Entry(channel)
+                    .Collection(i => i.Users).LoadAsync();
             }
 
             return channel;
@@ -51,7 +53,10 @@ namespace Gossip.SQLite.Repositories.Chat
 
             await channels.ForEachAsync(async channel =>
              {
-                 await Context.Entry(channel).Collection(i => i.Messages).LoadAsync();
+                 await Context.Entry(channel)
+                    .Collection(i => i.Messages).LoadAsync();
+                 await Context.Entry(channel)
+                    .Collection(i => i.Users).LoadAsync();
              });
 
             return channels;

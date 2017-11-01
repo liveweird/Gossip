@@ -72,8 +72,8 @@ namespace Gossip.SQLite.Tests.Chat
                     // Assert
                     Assert.Collection(channels, p =>
                     {
-                        Assert.Equal(p.Name, "abc");
-                        Assert.Equal(p.Description, "def");
+                        Assert.Equal("abc", p.Name);
+                        Assert.Equal("def", p.Description);
                     });
                 }
             }

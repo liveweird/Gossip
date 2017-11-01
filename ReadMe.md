@@ -24,7 +24,7 @@ dotnet test
 
 ## TODO
 
-1. Re-write shit to Dapper, so idea of ORM-agnisticism is proven
+1. Verify whether UoW is truly transactional (tests)
 1. Dependency resolver / binder
 1. Error handling (exceptions)
 1. Validation
