@@ -1,4 +1,5 @@
 ﻿using Gossip.Domain.Models.Chat;
+using Gossip.Domain.Models.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -18,7 +19,8 @@ namespace Gossip.SQLite
     {
         public DbSet<Channel> Channels { get; set; }
         public DbSet<Message> Messages { get; set; }
-
+        public DbSet<User> Users { get; set; }
+ 
         public GossipContext()
         {
         }
@@ -40,6 +42,9 @@ namespace Gossip.SQLite
                 .HasKey(c => c.Id);
 
             modelBuilder.Entity<Message>()
+                .HasKey(c => c.Id);
+
+            modelBuilder.Entity<User>()
                 .HasKey(c => c.Id);
         }
     }
