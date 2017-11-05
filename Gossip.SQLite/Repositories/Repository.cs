@@ -14,5 +14,10 @@ namespace Gossip.SQLite.Repositories
         }
 
         public abstract Task<T> GetAsync(int id);
+
+        public T Get(int id)
+        {
+            return GetAsync(id).Result;
+        }
     }
 }

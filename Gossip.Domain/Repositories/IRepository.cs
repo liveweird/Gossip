@@ -6,5 +6,6 @@ namespace Gossip.Domain.Repositories
     public interface IRepository<T> where T : IAggregateRoot
     {
         Task<T> GetAsync(int id);
+        T Get(int id);
     }
 }

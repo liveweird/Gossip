@@ -6,5 +6,6 @@ namespace Gossip.Domain.Repositories
     public interface IUnitOfWork : IDisposable
     {
         Task CommitChangesAsync();
+        void CommitChanges();
     }
 }

@@ -32,5 +32,10 @@ namespace Gossip.SQLite
             _dbTransaction.Commit();
             _commited = true;
         }
+
+        public void CommitChanges()
+        {
+            CommitChangesAsync().Wait();
+        }
     }
 }

@@ -21,5 +21,10 @@ namespace Gossip.SQLite
             var dbTransaction = await _dbContext.Database.BeginTransactionAsync();
             return new UnitOfWork<TContext>(_dbContext, dbTransaction, _mediator);
         }
+
+        public IUnitOfWork Create()
+        {
+            return CreateAsync().Result;
+        }
     }
 }
